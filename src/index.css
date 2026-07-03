@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+/*
+ * Dino's Tires — design tokens.
+ * Brand direction (see goal.md): premium automotive feel, black / light-gray
+ * surfaces with orange accents, generous white space, smooth motion.
+ *
+ * Tailwind v4 reads these tokens and generates utilities from them,
+ * e.g. `bg-brand` or `bg-surface-dark` — no tailwind.config.js needed.
+ */
+@theme {
+  /* TODO: swap for the exact hex from Dino's branding assets */
+  --color-brand: #f97316;
+  --color-brand-hover: #ea580c;
+
+  --color-surface-dark: #0a0a0a;
+  --color-surface-card: #171717;
+  --color-surface-light: #f5f5f5;
+}
