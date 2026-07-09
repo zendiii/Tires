@@ -1,0 +1,114 @@
+[
+  {
+    "year": 2023,
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "XL",
+    "fitment": { "front": "265/70R17", "rear": "265/70R17", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2023,
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "XLT",
+    "fitment": { "front": "265/70R17", "rear": "265/70R17", "staggered": false, "upgrades": ["275/60R20"] }
+  },
+  {
+    "year": 2023,
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "Lariat",
+    "fitment": { "front": "275/60R20", "rear": "275/60R20", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2022,
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "XLT",
+    "fitment": { "front": "265/70R17", "rear": "265/70R17", "staggered": false, "upgrades": ["275/60R20"] }
+  },
+  {
+    "year": 2022,
+    "make": "Ford",
+    "model": "F-150",
+    "trim": "Lariat",
+    "fitment": { "front": "275/60R20", "rear": "275/60R20", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2023,
+    "make": "Ram",
+    "model": "1500",
+    "trim": "Big Horn",
+    "fitment": { "front": "275/55R20", "rear": "275/55R20", "staggered": false, "upgrades": ["275/60R20"] }
+  },
+  {
+    "year": 2022,
+    "make": "Ram",
+    "model": "1500",
+    "trim": "Big Horn",
+    "fitment": { "front": "275/55R20", "rear": "275/55R20", "staggered": false, "upgrades": ["275/60R20"] }
+  },
+  {
+    "year": 2022,
+    "make": "Ram",
+    "model": "1500",
+    "trim": "Laramie",
+    "fitment": { "front": "275/55R20", "rear": "275/55R20", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2023,
+    "make": "Toyota",
+    "model": "Camry",
+    "trim": "LE",
+    "fitment": { "front": "215/50R17", "rear": "215/50R17", "staggered": false, "upgrades": ["235/45R18"] }
+  },
+  {
+    "year": 2023,
+    "make": "Toyota",
+    "model": "Camry",
+    "trim": "SE",
+    "fitment": { "front": "235/45R18", "rear": "235/45R18", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2022,
+    "make": "Toyota",
+    "model": "Camry",
+    "trim": "SE",
+    "fitment": { "front": "235/45R18", "rear": "235/45R18", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2022,
+    "make": "Honda",
+    "model": "Civic",
+    "trim": "Sport",
+    "fitment": { "front": "215/50R17", "rear": "215/50R17", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2021,
+    "make": "Honda",
+    "model": "Civic",
+    "trim": "EX",
+    "fitment": { "front": "215/50R17", "rear": "215/50R17", "staggered": false, "upgrades": [] }
+  },
+  {
+    "year": 2023,
+    "make": "Chevrolet",
+    "model": "Corvette",
+    "trim": "Stingray",
+    "fitment": { "front": "245/35R19", "rear": "305/30R20", "staggered": true, "upgrades": [] }
+  },
+  {
+    "year": 2022,
+    "make": "Chevrolet",
+    "model": "Corvette",
+    "trim": "Stingray",
+    "fitment": { "front": "245/35R19", "rear": "305/30R20", "staggered": true, "upgrades": [] }
+  },
+  {
+    "year": 2021,
+    "make": "Chevrolet",
+    "model": "Corvette",
+    "trim": "Stingray",
+    "fitment": { "front": "245/35R19", "rear": "305/30R20", "staggered": true, "upgrades": [] }
+  }
+]
