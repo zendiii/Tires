@@ -1,6 +1,6 @@
 # Dino's Tires
 
-![version](https://img.shields.io/badge/version-0.1.0-orange)
+![version](https://img.shields.io/badge/version-0.2.0-orange)
 
 A premium online tire shopping experience — clean, modern, and guided, with
 mobile installation built in. See [goal.md](goal.md) for the full product vision.
@@ -25,12 +25,20 @@ npm run preview # preview the production build locally
 
 ```
 src/
-  main.tsx     # entry point, mounts React
-  App.tsx      # root component
-  index.css    # Tailwind + brand design tokens
-  assets/      # images bundled by Vite
-public/        # static files served as-is
+  main.tsx       # entry point: mounts React, router, cart provider
+  App.tsx        # route table
+  index.css      # Tailwind + brand design tokens (@theme)
+  types/         # shared domain types (Tire, Fitment, cart, fulfillment)
+  data/          # sample tire catalog + vehicle fitment JSON
+  services/      # data access — the seam where the real backend plugs in
+  context/       # cart state (React Context + localStorage)
+  components/    # layout, tire card, wheel visualizer, vehicle selector
+  pages/         # one file per route
+public/          # static files served as-is
 ```
+
+**Contributors: see [ARCHITECTURE.md](ARCHITECTURE.md)** for a file-by-file
+guide, including exactly where to plug in the backend APIs or edit the theme.
 
 ## Versioning
 

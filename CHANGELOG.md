@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- ARCHITECTURE.md: file-by-file guide for contributors (where to plug in
+  backend APIs, edit the theme, add data, etc.); README now links to it
+
 ## [0.2.0] - 2026-07-08
 
 ### Added
