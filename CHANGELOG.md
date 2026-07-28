@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Housecall Pro booking rendered as a blank iframe: their booking app doesn't
+  boot in a cross-origin frame unless the embedding domain is recognised.
+  Booking now defaults to opening the hosted calendar in a new tab
+  (`BOOKING.embed = false`), which always works. The inline embed remains
+  available once the domain is allow-listed in Housecall Pro, and now loads
+  eagerly with an "open in a new tab" link beneath it so a blank frame can
+  never strand a customer.
+
 ## [0.4.0] - 2026-07-11
 
 ### Added
