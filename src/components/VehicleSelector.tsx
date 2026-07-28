@@ -88,7 +88,7 @@ export default function VehicleSelector({ onComplete }: {
               key={chip.label}
               type="button"
               onClick={chip.rewind}
-              className="skew-brand border border-brand/60 px-4 py-1.5 transition-colors hover:bg-brand"
+              className="group skew-brand border border-brand/60 px-4 py-1.5 transition-colors hover:bg-brand"
               title={`Change ${chip.label}`}
             >
               <span className="skew-fix block font-display text-sm text-brand transition-colors group-hover:text-white">

@@ -9,7 +9,9 @@ import type { Tire } from '../types'
 import { TIRE_CATEGORY_LABELS, formatPrice } from '../types'
 import { getTireById } from '../services/catalog'
 import { useCart } from '../context/CartContext'
+import { FEATURES } from '../config/site'
 import TireGraphic from '../components/TireGraphic'
+import PreviewBanner from '../components/PreviewBanner'
 
 export default function TireDetail() {
   const { id } = useParams()
@@ -32,7 +34,7 @@ export default function TireDetail() {
     return (
       <div className="px-6 py-24 text-center">
         <p className="text-neutral-400">We couldn't find that tire.</p>
-        <Link to="/shop/size" className="mt-4 inline-block text-brand hover:underline">
+        <Link to="/shop/size" className="mt-4 inline-block font-display text-brand hover:underline">
           Browse tires →
         </Link>
       </div>
@@ -41,14 +43,16 @@ export default function TireDetail() {
 
   // Which size is being shopped: from the URL if valid, else the first available.
   const requestedSize = searchParams.get('size')
-  const size =
-    requestedSize && tire.sizes.includes(requestedSize) ? requestedSize : tire.sizes[0]
+  const size = requestedSize && tire.sizes.includes(requestedSize) ? requestedSize : tire.sizes[0]
 
   const specs: [string, string][] = [
     ['Size', size],
     ['Type', TIRE_CATEGORY_LABELS[tire.category]],
     ['Load range', tire.loadRange],
-    ['Mileage warranty', tire.mileageWarranty ? `${tire.mileageWarranty.toLocaleString()} miles` : 'None (performance)'],
+    [
+      'Mileage warranty',
+      tire.mileageWarranty ? `${tire.mileageWarranty.toLocaleString()} miles` : 'None (performance)',
+    ],
     ['Rating', `★ ${tire.rating.toFixed(1)} (${tire.reviewCount.toLocaleString()} reviews)`],
     ['Availability', tire.inStock ? 'In stock' : 'Out of stock'],
   ]
@@ -61,24 +65,25 @@ export default function TireDetail() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
+      <PreviewBanner />
       <div className="grid items-center gap-12 lg:grid-cols-2">
-        <div className="flex justify-center rounded-2xl border border-neutral-800 bg-surface-card p-12">
+        <div className="flex justify-center border border-edge bg-surface-card p-12">
           <TireGraphic className="h-64 w-64" />
         </div>
 
         <div>
-          <p className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">
-            {tire.brand}
-          </p>
-          <h1 className="mt-1 text-4xl font-bold">{tire.model}</h1>
+          <p className="font-display text-xs tracking-widest text-brand">{tire.brand}</p>
+          <h1 className="mt-1 font-display text-5xl">{tire.model}</h1>
           <p className="mt-2 font-mono text-neutral-400">{size}</p>
 
-          <p className="mt-6 text-4xl font-bold">
+          <p className={`mt-7 font-display text-5xl ${FEATURES.ecommerce ? '' : 'text-neutral-400'}`}>
             {formatPrice(tire.price)}
-            <span className="ml-2 text-sm font-normal text-neutral-500">per tire</span>
+            <span className="ml-3 font-sans text-sm font-normal text-neutral-500">
+              {FEATURES.ecommerce ? 'per tire' : 'estimated, per tire'}
+            </span>
           </p>
 
-          <dl className="mt-8 divide-y divide-neutral-800 border-y border-neutral-800">
+          <dl className="mt-8 divide-y divide-edge border-y border-edge">
             {specs.map(([label, value]) => (
               <div key={label} className="flex justify-between py-3 text-sm">
                 <dt className="text-neutral-500">{label}</dt>
@@ -87,33 +92,54 @@ export default function TireDetail() {
             ))}
           </dl>
 
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <label className="flex items-center gap-3 text-sm text-neutral-400">
-              Quantity
-              <select
-                value={quantity}
-                onChange={(e) => setQuantity(Number(e.target.value))}
-                className="rounded-full border border-neutral-700 bg-surface-card px-4 py-2 text-white focus:border-brand focus:outline-none"
+          {FEATURES.ecommerce ? (
+            <>
+              <div className="mt-8 flex flex-wrap items-center gap-4">
+                <label className="flex items-center gap-3 text-sm text-neutral-400">
+                  Quantity
+                  <select
+                    value={quantity}
+                    onChange={(e) => setQuantity(Number(e.target.value))}
+                    className="border border-edge bg-surface-card px-4 py-2.5 text-white transition-colors focus:border-brand focus:outline-none"
+                  >
+                    {[1, 2, 3, 4, 5, 6].map((n) => (
+                      <option key={n} value={n}>{n}</option>
+                    ))}
+                  </select>
+                </label>
+
+                <button
+                  type="button"
+                  disabled={!tire.inStock}
+                  onClick={handleAdd}
+                  className="skew-brand bg-brand px-8 py-3.5 transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-surface-raised disabled:text-neutral-600"
+                >
+                  <span className="skew-fix block font-display text-white">
+                    {added ? 'Added ✓' : `Add ${quantity} — ${formatPrice(tire.price * quantity)}`}
+                  </span>
+                </button>
+              </div>
+
+              <p className="mt-6 text-sm text-neutral-500">
+                Ship to home, mobile installation, or in-shop — choose at checkout.
+              </p>
+            </>
+          ) : (
+            <div className="mt-8">
+              <Link
+                to="/book"
+                className="skew-brand inline-block bg-brand px-8 py-3.5 transition-colors hover:bg-brand-hover"
               >
-                {[1, 2, 3, 4, 5, 6].map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-            </label>
-
-            <button
-              type="button"
-              disabled={!tire.inStock}
-              onClick={handleAdd}
-              className="rounded-full bg-brand px-8 py-3 font-semibold text-black transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-neutral-800 disabled:text-neutral-600"
-            >
-              {added ? 'Added ✓' : `Add ${quantity} to Cart — ${formatPrice(tire.price * quantity)}`}
-            </button>
-          </div>
-
-          <p className="mt-6 text-sm text-neutral-500">
-            Ship to home, mobile installation, or in-shop — choose at checkout.
-          </p>
+                <span className="skew-fix block font-display text-white">
+                  Book an Install with This Tire
+                </span>
+              </Link>
+              <p className="mt-4 text-sm text-neutral-500">
+                Online ordering isn't live yet. Book an appointment and we'll
+                source this set and confirm real pricing before we come out.
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

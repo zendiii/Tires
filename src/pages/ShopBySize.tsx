@@ -9,6 +9,7 @@ import type { Tire, TireCategory } from '../types'
 import { TIRE_CATEGORY_LABELS } from '../types'
 import { getAvailableSizes, getFilterOptions, searchTiresBySize } from '../services/catalog'
 import TireCard from '../components/TireCard'
+import PreviewBanner from '../components/PreviewBanner'
 
 type SortOrder = 'rating' | 'price-asc' | 'price-desc'
 
@@ -65,6 +66,7 @@ export default function ShopBySize() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
+      <PreviewBanner />
       <h1 className="font-display text-4xl">Shop by Size</h1>
       <p className="mt-3 max-w-md text-sm text-neutral-400">
         Your size is printed on the sidewall — width / aspect ratio R wheel

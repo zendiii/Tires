@@ -1,77 +1,122 @@
 /*
- * Landing page: the brand lockup, then the two shopping paths as large cards.
- * Deliberately sparse — the logo is loud, so the space around it stays quiet
- * (goal.md: premium feel through restraint).
+ * Landing page.
+ *
+ * Priority order reflects what the business can actually transact today:
+ * booking an installation is the primary call to action, and tire shopping
+ * sits below it as a labelled preview until inventory/pricing APIs are live
+ * (see FEATURES.ecommerce in src/config/site.ts). When that flag flips, the
+ * shopping section drops its "coming soon" treatment automatically.
  */
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
+import { FEATURES } from '../config/site'
 
-const PATHS = [
+const PROMISES = [
+  ['We Come to You', 'Mobile installation at your home or office.'],
+  ['Or Visit the Shop', 'Same-day fitting while you wait.'],
+  ['Done Right', 'Mounted, balanced, and torqued to spec.'],
+]
+
+const SHOP_PATHS = [
   {
     to: '/shop/vehicle',
     title: 'Shop by Vehicle',
-    body: "Tell us your year, make, model, and trim — we'll recommend your factory size first.",
-    cta: 'Start with your vehicle',
+    body: "Year, make, model, trim — we'll show your factory size first.",
   },
   {
     to: '/shop/size',
     title: 'Shop by Size',
-    body: 'Already know your size? Jump straight to results, like 275/55R20.',
-    cta: 'Search by size',
+    body: 'Already know your size? Go straight to results, like 275/55R20.',
   },
-]
-
-const PROMISES = [
-  ['Ship to Home', 'Free 2-4 day delivery on every set.'],
-  ['Mobile Installation', 'We come to your driveway or office.'],
-  ['In-Shop Installation', "Same-day fitting at Dino's."],
 ]
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center px-6 py-20 sm:py-28">
+    <div className="flex flex-col items-center px-6 py-20 sm:py-24">
+      {/* Primary: booking */}
       <header className="flex flex-col items-center text-center">
         <Logo
           variant="square"
-          className="h-32 w-auto animate-[fade-up_0.7s_ease_both] sm:h-40"
+          className="h-28 w-auto animate-[fade-up_0.7s_ease_both] sm:h-36"
         />
         <h1 className="mt-10 max-w-3xl animate-[fade-up_0.7s_ease_0.15s_both] font-display text-5xl sm:text-7xl">
-          The right tires,
+          Tires installed
           <br />
-          <span className="text-brand">without the noise.</span>
+          <span className="text-brand">wherever you are.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md animate-[fade-up_0.7s_ease_0.25s_both] text-neutral-400">
-          Find your factory fitment in seconds — shipped to your door or
-          installed wherever you are.
+          Mobile tire service that comes to your driveway — or bring it by the
+          shop. Pick a time and we'll handle the rest.
         </p>
-      </header>
 
-      <div className="mt-16 grid w-full max-w-3xl animate-[fade-up_0.7s_ease_0.35s_both] gap-5 sm:grid-cols-2">
-        {PATHS.map((path) => (
-          <Link
-            key={path.to}
-            to={path.to}
-            className="group relative overflow-hidden border border-edge bg-surface-card p-8 transition-all duration-300 hover:-translate-y-1 hover:border-brand"
-          >
-            {/* Raked red edge that extends on hover — the logo's angle as motion. */}
-            <span className="skew-brand absolute top-0 -left-1 h-full w-1.5 bg-brand transition-all duration-300 group-hover:w-3" />
-            <h2 className="font-display text-2xl transition-colors group-hover:text-brand">
-              {path.title}
-            </h2>
-            <p className="mt-2.5 text-sm text-neutral-400">{path.body}</p>
-            <p className="mt-8 font-display text-sm text-brand">{path.cta} →</p>
-          </Link>
-        ))}
-      </div>
+        <Link
+          to="/book"
+          className="skew-brand mt-10 animate-[fade-up_0.7s_ease_0.35s_both] bg-brand px-12 py-5 transition-colors hover:bg-brand-hover"
+        >
+          <span className="skew-fix block font-display text-xl text-white sm:text-2xl">
+            Schedule Service
+          </span>
+        </Link>
+      </header>
 
       <div className="mt-20 grid max-w-3xl animate-[fade-up_0.7s_ease_0.45s_both] gap-10 text-center sm:grid-cols-3">
         {PROMISES.map(([title, body]) => (
           <div key={title}>
-            <h3 className="font-display text-base text-white">{title}</h3>
+            <h2 className="font-display text-base text-white">{title}</h2>
             <p className="mt-1.5 text-sm text-neutral-500">{body}</p>
           </div>
         ))}
       </div>
+
+      {/* Secondary: tire shopping, gated until pricing/inventory APIs land */}
+      <section className="mt-24 w-full max-w-3xl border-t border-edge pt-14">
+        <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
+          <h2 className="font-display text-2xl text-neutral-300">Shop Tires</h2>
+          {!FEATURES.ecommerce && (
+            <span className="skew-brand border border-neutral-700 px-3 py-1">
+              <span className="skew-fix block font-display text-xs text-neutral-400">
+                Coming Soon
+              </span>
+            </span>
+          )}
+        </div>
+
+        {!FEATURES.ecommerce && (
+          <p className="mx-auto mb-8 max-w-md text-center text-sm text-neutral-500">
+            Online ordering opens once our live inventory feed is connected.
+            Browse the catalog now to see what fits — then book an install and
+            we'll source your set.
+          </p>
+        )}
+
+        <div className="grid gap-5 sm:grid-cols-2">
+          {SHOP_PATHS.map((path) => (
+            <Link
+              key={path.to}
+              to={path.to}
+              className={`group relative overflow-hidden border p-7 transition-all duration-300 hover:-translate-y-0.5 ${
+                FEATURES.ecommerce
+                  ? 'border-edge bg-surface-card hover:border-brand'
+                  : 'border-edge/60 bg-surface-card/40 hover:border-neutral-600'
+              }`}
+            >
+              <h3
+                className={`font-display text-xl transition-colors ${
+                  FEATURES.ecommerce
+                    ? 'group-hover:text-brand'
+                    : 'text-neutral-400 group-hover:text-neutral-200'
+                }`}
+              >
+                {path.title}
+              </h3>
+              <p className="mt-2 text-sm text-neutral-500">{path.body}</p>
+              <p className="mt-6 font-display text-sm text-neutral-500">
+                {FEATURES.ecommerce ? 'Start →' : 'Preview →'}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
     </div>
   )
 }

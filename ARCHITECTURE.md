@@ -8,8 +8,12 @@ below for detail.
 
 | Task | File(s) to edit |
 |---|---|
+| **Paste in the Housecall Pro booking link** | `src/config/site.ts` → `BOOKING.url` (get it from Housecall Pro → Marketing → Online Booking) |
+| **Turn tire shopping back on** | `src/config/site.ts` → `FEATURES.ecommerce = true`. One flag re-enables Add to Cart, the cart, checkout, and drops every "coming soon" label sitewide. |
+| Change the Instagram / phone number | `src/config/site.ts` → `SITE` |
 | **Implement the real backend APIs** | `src/services/catalog.ts` and `src/services/fitment.ts` — replace the `fakeFetch(...)` bodies with real `fetch('/api/...')` calls. Nothing outside `src/services/` needs to change. |
-| Edit the theme (colors, brand orange, surfaces) | `src/index.css` — the `@theme` block holds every design token; Tailwind generates utilities (`bg-brand`, etc.) from it |
+| Edit the theme (brand red, surfaces, fonts) | `src/index.css` — the `@theme` block holds every design token; Tailwind generates utilities (`bg-brand`, etc.) from it |
+| Swap or re-crop the logo | `src/components/Logo.tsx` + `src/assets/logo-*.png` (originals in `src/assets/CMYK/`) |
 | Add / edit tires in the catalog | `src/data/tires.json` |
 | Add / edit vehicles and OEM fitments | `src/data/vehicles.json` |
 | Change fulfillment options or install fees | `src/types/index.ts` → `FULFILLMENT_OPTIONS` |
@@ -61,14 +65,28 @@ difference.
 |---|---|
 | `main.tsx` | Entry point: mounts React, wraps the app in the router and cart provider |
 | `App.tsx` | Route table — every page is registered here |
-| `index.css` | **The theme.** Tailwind import + `@theme` design tokens (brand orange, dark surfaces) + shared keyframe animations |
+| `index.css` | **The theme.** Tailwind + font imports, `@theme` design tokens (brand red `#e24233`, warm-dark surfaces, display/body fonts), the angular `skew-brand` utilities, and shared animations |
 | `vite-env.d.ts` | Type declarations for Vite globals (`__APP_VERSION__`) |
+
+### `src/config/` — business configuration
+
+| File | Purpose |
+|---|---|
+| `site.ts` | **Start here for business changes.** `FEATURES` (is e-commerce live?), `BOOKING` (Housecall Pro link + embed mode), and `SITE` (Instagram, phone). No component hardcodes these. |
 
 ### `src/types/` — shared domain types
 
 | File | Purpose |
 |---|---|
 | `index.ts` | The vocabulary of the app: `Tire`, `Fitment`, `VehicleRecord`, `CartItem`, tire-size parsing/formatting helpers, and `FULFILLMENT_OPTIONS` (ship / mobile / in-shop, with fees). Everything imports its types from here. |
+
+### `src/assets/` — brand artwork
+
+| File | Purpose |
+|---|---|
+| `CMYK/` | The original logo package from the designer: EPS / PDF / PNG / SVG / WebP, each in Black, White, Full (color-on-light), and OverBlack (color-on-dark) variants |
+| `logo-horizontal.png` | OverBlack horizontal lockup, cropped to content — used in the header and footer |
+| `logo-square.png` | OverBlack stacked lockup, cropped to content — used in the hero |
 
 ### `src/data/` — sample data (temporary stand-in for the backend)
 
@@ -95,7 +113,10 @@ difference.
 
 | File | Purpose |
 |---|---|
-| `Layout.tsx` | App shell: sticky header with nav + cart badge, footer, scroll reset on navigation |
+| `Layout.tsx` | App shell: sticky header with logo, nav + Book Now CTA, footer with Instagram link, scroll reset on navigation |
+| `Logo.tsx` | The brand lockup (horizontal + square variants). Uses cropped PNGs rather than the source SVGs — see the file's comment for why |
+| `PreviewBanner.tsx` | The "pricing isn't live yet" notice on shopping pages. Renders nothing once `FEATURES.ecommerce` is true |
+| `icons.tsx` | Inline social/UI glyphs (currently Instagram) |
 | `TireCard.tsx` | One tire in a results grid: brand, model, image, price, warranty, rating, stock, OEM badge, View Details / Add to Cart |
 | `TireGraphic.tsx` | Stylized SVG tire — placeholder until real product photography |
 | `WheelVisualizer.tsx` | Close-up wheel drawing whose proportions come from the actual tire size; renders front + rear for staggered vehicles |
@@ -105,7 +126,8 @@ difference.
 
 | File | Route | Purpose |
 |---|---|---|
-| `Home.tsx` | `/` | Landing: hero + the two shopping paths + fulfillment trio |
+| `Home.tsx` | `/` | Landing: booking-first hero, service promises, then tire shopping as a gated preview |
+| `Book.tsx` | `/book` | Housecall Pro booking (inline iframe), how-it-works steps, service list. Falls back to a contact card when `BOOKING.url` is empty |
 | `ShopByVehicle.tsx` | `/shop/vehicle` | Vehicle selector → wheel visualizer → OEM-first results (staggered-aware) |
 | `ShopBySize.tsx` | `/shop/size` | Fast size search with brand/type/load-range filters and sorting; size lives in the URL |
 | `TireDetail.tsx` | `/tire/:id` | Spec table, quantity picker (defaults to a set of 4), add to cart |

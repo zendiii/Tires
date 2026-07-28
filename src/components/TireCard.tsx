@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom'
 import type { Tire } from '../types'
 import { TIRE_CATEGORY_LABELS, formatPrice } from '../types'
 import { useCart } from '../context/CartContext'
+import { FEATURES } from '../config/site'
 import TireGraphic from './TireGraphic'
 
 interface TireCardProps {
@@ -59,16 +60,22 @@ export default function TireCard({ tire, size, isOem = false }: TireCardProps) {
 
       <div className="mt-auto flex items-end justify-between pt-5">
         <div>
-          <p className="font-display text-3xl">{formatPrice(tire.price)}</p>
-          <p className="text-xs text-neutral-500">per tire</p>
+          <p className={`font-display text-3xl ${FEATURES.ecommerce ? '' : 'text-neutral-400'}`}>
+            {formatPrice(tire.price)}
+          </p>
+          <p className="text-xs text-neutral-500">
+            {FEATURES.ecommerce ? 'per tire' : 'est. per tire'}
+          </p>
         </div>
-        <p
-          className={`font-display text-xs ${
-            tire.inStock ? 'text-emerald-400' : 'text-neutral-500'
-          }`}
-        >
-          {tire.inStock ? 'In Stock' : 'Out of Stock'}
-        </p>
+        {FEATURES.ecommerce && (
+          <p
+            className={`font-display text-xs ${
+              tire.inStock ? 'text-emerald-400' : 'text-neutral-500'
+            }`}
+          >
+            {tire.inStock ? 'In Stock' : 'Out of Stock'}
+          </p>
+        )}
       </div>
 
       <div className="mt-5 flex gap-3">
@@ -78,14 +85,27 @@ export default function TireCard({ tire, size, isOem = false }: TireCardProps) {
         >
           <span className="skew-fix block font-display text-sm">Details</span>
         </Link>
-        <button
-          type="button"
-          disabled={!tire.inStock}
-          onClick={() => addItem(tire.id, size, 4)}
-          className="skew-brand flex-1 bg-brand py-2.5 transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-surface-raised disabled:text-neutral-600"
-        >
-          <span className="skew-fix block font-display text-sm text-white">Add to Cart</span>
-        </button>
+        {FEATURES.ecommerce ? (
+          <button
+            type="button"
+            disabled={!tire.inStock}
+            onClick={() => addItem(tire.id, size, 4)}
+            className="skew-brand flex-1 bg-brand py-2.5 transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-surface-raised disabled:text-neutral-600"
+          >
+            <span className="skew-fix block font-display text-sm text-white">Add to Cart</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            disabled
+            title="Online ordering isn't live yet — book an install and we'll source your set"
+            className="skew-brand flex-1 cursor-not-allowed bg-surface-raised py-2.5"
+          >
+            <span className="skew-fix block font-display text-sm text-neutral-500">
+              Coming Soon
+            </span>
+          </button>
+        )}
       </div>
     </article>
   )

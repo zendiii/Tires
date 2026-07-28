@@ -12,6 +12,7 @@ import { searchTiresBySize } from '../services/catalog'
 import VehicleSelector from '../components/VehicleSelector'
 import WheelVisualizer from '../components/WheelVisualizer'
 import TireCard from '../components/TireCard'
+import PreviewBanner from '../components/PreviewBanner'
 
 /** Section heading with the logo's raked red rule. */
 function SectionHeading({ children }: { children: React.ReactNode }) {
@@ -86,12 +87,15 @@ export default function ShopByVehicle() {
   // Act 1 — vehicle selection.
   if (!vehicle || !fitment || !selectedSize) {
     return (
-      <div className="mx-auto flex max-w-6xl flex-col items-center px-6 py-16">
-        <h1 className="font-display text-4xl">Shop by Vehicle</h1>
-        <p className="mt-3 mb-12 max-w-md text-center text-neutral-400">
-          Four quick steps and we'll show you exactly what fits.
-        </p>
-        <VehicleSelector onComplete={setVehicle} />
+      <div className="mx-auto flex max-w-6xl flex-col px-6 py-16">
+        <PreviewBanner />
+        <div className="flex flex-col items-center">
+          <h1 className="font-display text-4xl">Shop by Vehicle</h1>
+          <p className="mt-3 mb-12 max-w-md text-center text-neutral-400">
+            Four quick steps and we'll show you exactly what fits.
+          </p>
+          <VehicleSelector onComplete={setVehicle} />
+        </div>
       </div>
     )
   }
@@ -121,6 +125,7 @@ export default function ShopByVehicle() {
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
+      <PreviewBanner />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="font-display text-xs tracking-widest text-brand">Your Vehicle</p>
