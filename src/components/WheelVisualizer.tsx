@@ -17,20 +17,20 @@ function Wheel({ size, label }: { size: string; label: string }) {
   const rimIn = parsed?.rimDiameter ?? 18
   const sidewallIn = parsed ? (parsed.width * parsed.aspectRatio) / 100 / 25.4 : 5
   const scale = 3.1
-  const outerR = ((rimIn / 2) + sidewallIn) * scale
+  const outerR = (rimIn / 2 + sidewallIn) * scale
   const rimR = (rimIn / 2) * scale
 
-  const transition = { transition: 'r 0.5s ease' } as const
+  const grow = { transition: 'r 0.5s cubic-bezier(0.4, 0, 0.2, 1)' } as const
 
   return (
     <figure className="flex flex-col items-center gap-3">
       <svg viewBox="0 0 200 200" className="h-52 w-52 sm:h-64 sm:w-64">
         {/* tire */}
-        <circle cx="100" cy="100" r={outerR} fill="#191919" style={transition} />
-        <circle cx="100" cy="100" r={outerR - 2} fill="#232323" style={transition} />
+        <circle cx="100" cy="100" r={outerR} fill="#161313" style={grow} />
+        <circle cx="100" cy="100" r={outerR - 2} fill="#201d1d" style={grow} />
         {/* rim */}
-        <circle cx="100" cy="100" r={rimR} fill="#4a4a4a" style={transition} />
-        <circle cx="100" cy="100" r={rimR - 2} fill="#5b5b5b" style={transition} />
+        <circle cx="100" cy="100" r={rimR} fill="#443e3e" style={grow} />
+        <circle cx="100" cy="100" r={rimR - 2} fill="#565050" style={grow} />
         {Array.from({ length: 5 }, (_, i) => {
           const angle = (i / 5) * 2 * Math.PI - Math.PI / 2
           return (
@@ -40,20 +40,21 @@ function Wheel({ size, label }: { size: string; label: string }) {
               y1="100"
               x2={100 + Math.cos(angle) * (rimR - 5)}
               y2={100 + Math.sin(angle) * (rimR - 5)}
-              stroke="#333"
+              stroke="#2f2b2b"
               strokeWidth="9"
               strokeLinecap="round"
               className="transition-all duration-500"
             />
           )
         })}
-        <circle cx="100" cy="100" r="9" fill="#8a8a8a" />
+        {/* hub — brand accent */}
+        <circle cx="100" cy="100" r="9" fill="#e24233" />
         {/* size lettering on the sidewall */}
         <text
           x="100"
           y={100 - rimR - (outerR - rimR) / 2 + 4}
           textAnchor="middle"
-          fill="#a3a3a3"
+          fill="#8d8484"
           fontSize="10"
           fontFamily="ui-monospace, monospace"
           className="transition-all duration-500"
@@ -62,7 +63,7 @@ function Wheel({ size, label }: { size: string; label: string }) {
         </text>
       </svg>
       <figcaption className="text-center">
-        <p className="text-xs font-semibold tracking-widest text-neutral-500 uppercase">{label}</p>
+        <p className="font-display text-xs tracking-widest text-brand">{label}</p>
         <p className="font-mono text-sm text-white">{size}</p>
       </figcaption>
     </figure>
@@ -82,5 +83,5 @@ export default function WheelVisualizer({ fitment, selectedSize }: {
       </div>
     )
   }
-  return <Wheel size={selectedSize} label="All four wheels" />
+  return <Wheel size={selectedSize} label="All Four Wheels" />
 }

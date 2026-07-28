@@ -1,24 +1,87 @@
 @import "tailwindcss";
+@import "@fontsource/anton/400.css";
+@import "@fontsource-variable/inter";
 
 /*
- * Dino's Tires — design tokens.
- * Brand direction (see goal.md): premium automotive feel, black / light-gray
- * surfaces with orange accents, generous white space, smooth motion.
+ * Dino's Mobile Tires — design system.
  *
- * Tailwind v4 reads these tokens and generates utilities from them,
- * e.g. `bg-brand` or `bg-surface-dark` — no tailwind.config.js needed.
+ * Every token below is derived from the brand logo (src/assets/CMYK/):
+ *   - Red  #e24233 — the "DINO'S" badge
+ *   - Black #010101 — the "MOBILE TIRES" wordmark
+ *   - White #ffffff — the knockout lettering
+ * The logo uses only these three colors, so the site does too. Neutrals are
+ * warmed slightly toward the red so grays never read as cold/blue.
+ *
+ * Tailwind v4 generates utilities from these tokens (bg-brand, font-display,
+ * etc.) — there is no tailwind.config.js.
  */
 @theme {
-  /* TODO: swap for the exact hex from Dino's branding assets */
-  --color-brand: #f97316;
-  --color-brand-hover: #ea580c;
+  /* Brand — sampled directly from the logo artwork */
+  --color-brand: #e24233;
+  --color-brand-hover: #c9332a;
+  --color-brand-dim: #7d241d;
 
-  --color-surface-dark: #0a0a0a;
-  --color-surface-card: #171717;
-  --color-surface-light: #f5f5f5;
+  /* Surfaces — near-black, matching the logo's #010101 wordmark */
+  --color-surface-dark: #0b0a0a;
+  --color-surface-card: #151313;
+  --color-surface-raised: #201d1d;
+  --color-surface-light: #f4f2f2;
+
+  /* Hairlines */
+  --color-edge: #2a2626;
+
+  /*
+   * Type. The logo is set in Zuume Bold — a commercial condensed grotesque we
+   * can't redistribute. Anton is the closest free match (same heavy condensed
+   * uppercase silhouette) and carries all display headings; Inter handles body
+   * text where legibility matters more than attitude.
+   */
+  --font-display: "Anton", "Arial Narrow", sans-serif;
+  --font-sans: "Inter Variable", system-ui, sans-serif;
 }
 
-/* Entrance animation used on the home page (fade in while rising slightly). */
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-surface-dark);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Display headings mimic the wordmark: heavy, condensed, uppercase, tight.
+   * Anton is already ultra-bold, so weight is left alone.
+   */
+  .font-display {
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+    line-height: 0.92;
+  }
+}
+
+/*
+ * The logo's signature shape: a parallelogram whose leading edge rakes back
+ * ~16°, echoing the red "DINO'S" badge. Used for buttons, badges, and accents
+ * so the brand's angular geometry repeats across the UI.
+ *
+ * Applied to a container; inner content must be counter-skewed to stay
+ * upright — see the `skew-fix` helper.
+ */
+@utility skew-brand {
+  transform: skewX(-12deg);
+}
+
+@utility skew-fix {
+  transform: skewX(12deg);
+}
+
+/*
+ * Full logo-derived hexagon: slanted top-left and bottom-right cuts, taken
+ * from the badge polygon in the source artwork.
+ */
+@utility clip-speed {
+  clip-path: polygon(57.6% 0, 100% 0, 100% 61.8%, 50.5% 100%, 0 100%, 0 39.3%);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -27,5 +90,15 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* Respect users who ask for reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }

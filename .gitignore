@@ -26,3 +26,4 @@ dist-ssr
 #other files to hide
 goal.md
 AI-BestPractices.md
+.DS_Store

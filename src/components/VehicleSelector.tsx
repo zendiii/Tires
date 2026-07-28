@@ -18,6 +18,8 @@ const STEP_TITLES: Record<Step, string> = {
   trim: 'Select your trim',
 }
 
+const STEP_ORDER: Step[] = ['year', 'make', 'model', 'trim']
+
 export default function VehicleSelector({ onComplete }: {
   onComplete: (vehicle: Vehicle) => void
 }) {
@@ -63,8 +65,22 @@ export default function VehicleSelector({ onComplete }: {
   if (make !== null) chips.push({ label: make, rewind: () => { setMake(null); setModel(null) } })
   if (model !== null) chips.push({ label: model, rewind: () => setModel(null) })
 
+  const stepIndex = STEP_ORDER.indexOf(step)
+
   return (
     <div className="w-full max-w-2xl">
+      {/* Progress rail — four raked segments filling as the customer advances. */}
+      <div className="mb-8 flex gap-1.5">
+        {STEP_ORDER.map((s, i) => (
+          <div
+            key={s}
+            className={`skew-brand h-1 flex-1 transition-colors duration-500 ${
+              i <= stepIndex ? 'bg-brand' : 'bg-surface-raised'
+            }`}
+          />
+        ))}
+      </div>
+
       {chips.length > 0 && (
         <div className="mb-6 flex flex-wrap items-center gap-2">
           {chips.map((chip) => (
@@ -72,16 +88,18 @@ export default function VehicleSelector({ onComplete }: {
               key={chip.label}
               type="button"
               onClick={chip.rewind}
-              className="rounded-full border border-brand/50 px-4 py-1 text-sm text-brand transition-colors hover:bg-brand hover:text-black"
-              title="Change"
+              className="skew-brand border border-brand/60 px-4 py-1.5 transition-colors hover:bg-brand"
+              title={`Change ${chip.label}`}
             >
-              {chip.label} ✕
+              <span className="skew-fix block font-display text-sm text-brand transition-colors group-hover:text-white">
+                {chip.label} ✕
+              </span>
             </button>
           ))}
         </div>
       )}
 
-      <h2 className="mb-6 text-2xl font-bold">{STEP_TITLES[step]}</h2>
+      <h2 className="mb-6 font-display text-3xl">{STEP_TITLES[step]}</h2>
 
       {loading ? (
         <p className="animate-pulse text-neutral-500">Loading…</p>
@@ -96,9 +114,13 @@ export default function VehicleSelector({ onComplete }: {
               key={option}
               type="button"
               onClick={() => select(option)}
-              className="rounded-xl border border-neutral-800 bg-surface-card px-4 py-4 font-semibold transition-all hover:-translate-y-0.5 hover:border-brand hover:text-brand"
+              className="group relative overflow-hidden border border-edge bg-surface-card px-4 py-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-brand"
             >
-              {option}
+              {/* Raked red wipe on hover — the logo's angle, used as motion. */}
+              <span className="skew-brand absolute inset-y-0 -left-2 w-0 bg-brand transition-all duration-300 group-hover:w-[120%]" />
+              <span className="relative font-display text-lg transition-colors group-hover:text-white">
+                {option}
+              </span>
             </button>
           ))}
         </div>

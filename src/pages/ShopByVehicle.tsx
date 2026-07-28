@@ -13,8 +13,18 @@ import VehicleSelector from '../components/VehicleSelector'
 import WheelVisualizer from '../components/WheelVisualizer'
 import TireCard from '../components/TireCard'
 
+/** Section heading with the logo's raked red rule. */
+function SectionHeading({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mb-6 flex items-center gap-3">
+      <span className="skew-brand h-6 w-1.5 bg-brand" />
+      <h3 className="font-display text-2xl">{children}</h3>
+    </div>
+  )
+}
+
 function ResultsSection({ title, size, isOemSize }: {
-  title?: string
+  title: string
   size: string
   isOemSize: boolean
 }) {
@@ -32,8 +42,8 @@ function ResultsSection({ title, size, isOemSize }: {
   }, [size])
 
   return (
-    <section className="mt-12">
-      {title && <h3 className="mb-6 text-lg font-bold">{title}</h3>}
+    <section className="mt-14">
+      <SectionHeading>{title}</SectionHeading>
       {tires === null ? (
         <p className="animate-pulse text-neutral-500">Finding tires…</p>
       ) : tires.length === 0 ? (
@@ -77,10 +87,8 @@ export default function ShopByVehicle() {
   if (!vehicle || !fitment || !selectedSize) {
     return (
       <div className="mx-auto flex max-w-6xl flex-col items-center px-6 py-16">
-        <p className="mb-2 text-sm font-semibold tracking-[0.3em] text-brand uppercase">
-          Shop by Vehicle
-        </p>
-        <p className="mb-10 max-w-md text-center text-neutral-400">
+        <h1 className="font-display text-4xl">Shop by Vehicle</h1>
+        <p className="mt-3 mb-12 max-w-md text-center text-neutral-400">
           Four quick steps and we'll show you exactly what fits.
         </p>
         <VehicleSelector onComplete={setVehicle} />
@@ -89,63 +97,60 @@ export default function ShopByVehicle() {
   }
 
   // Act 2 — fitment + results.
-  const vehicleName = `${vehicle.year} ${vehicle.make} ${vehicle.model} ${vehicle.trim}`
   const isOemSelected = selectedSize === fitment.front
+
+  const sizeButton = (value: string, tag: string) => {
+    const active = selectedSize === value
+    return (
+      <button
+        key={value}
+        type="button"
+        onClick={() => setSelectedSize(value)}
+        className={`skew-brand border px-6 py-2.5 transition-colors ${
+          active
+            ? 'border-brand bg-brand'
+            : 'border-edge text-neutral-300 hover:border-brand hover:text-brand'
+        }`}
+      >
+        <span className={`skew-fix block font-display text-sm ${active ? 'text-white' : ''}`}>
+          {value} · {tag}
+        </span>
+      </button>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-6xl px-6 py-16">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold tracking-[0.3em] text-brand uppercase">
-            Your Vehicle
-          </p>
-          <h1 className="mt-1 text-3xl font-bold">{vehicleName}</h1>
+          <p className="font-display text-xs tracking-widest text-brand">Your Vehicle</p>
+          <h1 className="mt-1 font-display text-4xl">
+            {vehicle.year} {vehicle.make} {vehicle.model}{' '}
+            <span className="text-neutral-500">{vehicle.trim}</span>
+          </h1>
         </div>
         <button
           type="button"
           onClick={reset}
-          className="rounded-full border border-neutral-700 px-4 py-1.5 text-sm transition-colors hover:border-brand hover:text-brand"
+          className="skew-brand border border-edge px-5 py-2 transition-colors hover:border-brand"
         >
-          Change vehicle
+          <span className="skew-fix block font-display text-sm">Change Vehicle</span>
         </button>
       </div>
 
-      <div className="mt-10 rounded-2xl border border-neutral-800 bg-surface-card p-8">
+      <div className="mt-10 border border-edge bg-surface-card p-8">
         <WheelVisualizer fitment={fitment} selectedSize={selectedSize} />
 
         {fitment.staggered ? (
-          <p className="mt-6 text-center text-sm text-neutral-400">
-            This vehicle has a <span className="text-white">staggered setup</span> — the rear
-            tires are wider than the fronts, so you'll need both sizes.
+          <p className="mt-8 text-center text-sm text-neutral-400">
+            This vehicle has a <span className="font-display text-brand">staggered setup</span> —
+            the rear tires are wider than the fronts, so you'll need both sizes.
           </p>
         ) : (
           fitment.upgrades.length > 0 && (
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => setSelectedSize(fitment.front)}
-                className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-                  isOemSelected
-                    ? 'bg-brand text-black'
-                    : 'border border-neutral-700 text-neutral-300 hover:border-brand hover:text-brand'
-                }`}
-              >
-                {fitment.front} · Factory
-              </button>
-              {fitment.upgrades.map((upgrade) => (
-                <button
-                  key={upgrade}
-                  type="button"
-                  onClick={() => setSelectedSize(upgrade)}
-                  className={`rounded-full px-5 py-2 text-sm font-semibold transition-colors ${
-                    selectedSize === upgrade
-                      ? 'bg-brand text-black'
-                      : 'border border-neutral-700 text-neutral-300 hover:border-brand hover:text-brand'
-                  }`}
-                >
-                  {upgrade} · Upgrade
-                </button>
-              ))}
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
+              {sizeButton(fitment.front, 'Factory')}
+              {fitment.upgrades.map((upgrade) => sizeButton(upgrade, 'Upgrade'))}
             </div>
           )
         )}
