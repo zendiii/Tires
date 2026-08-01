@@ -38,31 +38,31 @@ export default function Home() {
       <header className="flex flex-col items-center text-center">
         <Logo
           variant="square"
-          className="h-28 w-auto animate-[fade-up_0.7s_ease_both] sm:h-36"
+          className="h-28 w-auto animate-enter sm:h-36"
         />
-        <h1 className="mt-10 max-w-3xl animate-[fade-up_0.7s_ease_0.15s_both] font-display text-5xl sm:text-7xl">
+        <h1 className="mt-10 max-w-3xl animate-enter font-display text-5xl sm:text-7xl">
           Tires installed
           <br />
           <span className="text-brand">wherever you are.</span>
         </h1>
-        <p className="mx-auto mt-6 max-w-md animate-[fade-up_0.7s_ease_0.25s_both] text-neutral-400">
+        <p className="mx-auto mt-6 max-w-md animate-enter text-neutral-400">
           Mobile tire service that comes to your driveway — or bring it by the
           shop. Pick a time and we'll handle the rest.
         </p>
 
-        <BookButton className="skew-brand mt-10 animate-[fade-up_0.7s_ease_0.35s_both] bg-brand px-12 py-5 text-xl text-white transition-colors hover:bg-brand-hover sm:text-2xl">
+        <BookButton className="skew-brand mt-10 animate-enter bg-brand px-12 py-5 text-xl text-white transition-colors hover:bg-brand-hover sm:text-2xl">
           Schedule Service
         </BookButton>
 
         <Link
           to="/book"
-          className="mt-6 animate-[fade-up_0.7s_ease_0.4s_both] font-display text-sm text-neutral-400 transition-colors hover:text-brand"
+          className="mt-6 animate-enter font-display text-sm text-neutral-400 transition-colors hover:text-brand"
         >
           See how mobile installation works →
         </Link>
       </header>
 
-      <div className="mt-20 grid max-w-3xl animate-[fade-up_0.7s_ease_0.45s_both] gap-10 text-center sm:grid-cols-3">
+      <div className="mt-20 grid max-w-3xl animate-enter gap-10 text-center sm:grid-cols-3">
         {PROMISES.map(([title, body]) => (
           <div key={title}>
             <h2 className="font-display text-base text-white">{title}</h2>

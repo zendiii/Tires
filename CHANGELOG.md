@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.1] - 2026-07-28
+
+### Fixed
+
+- **Black screen on Windows after navigating to the landing page.** Hero
+  elements animated with `animation-fill-mode: both`, which pins an element to
+  the keyframe's opening frame (`opacity: 0`) until its animation runs — so
+  anything preventing the animation from starting left the content permanently
+  invisible against our near-black background. The entrance animation now
+  carries no fill-mode and no delay, so a missed animation costs a fade rather
+  than the whole page.
+- The reduced-motion media query overrode `animation-duration` but not
+  `animation-delay` or `animation-fill-mode`, leaving staggered content hidden
+  for the length of its delay. It now neutralises delay, iteration count, and
+  fill-mode. This path matters more on Windows, where the OS animation toggle
+  is commonly off.
+
+### Added
+
+- `ErrorBoundary` around the app: an uncaught render error previously unmounted
+  the whole React tree, leaving a bare black page with nothing in the console.
+  Errors now show a readable message with a reload button and are logged.
+
 ## [0.5.0] - 2026-07-28
 
 ### Added

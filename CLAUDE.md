@@ -11,6 +11,7 @@ Product vision lives in goal.md — read it before feature work.
 - Logo is used as cropped PNG, not the source SVG: the SVGs set the wordmark as live text in Zuume Bold (a licensed font visitors lack), so SVG would render it in a wrong fallback face
 - Display type is Anton (free stand-in for the logo's Zuume Bold); body is Inter. Both self-hosted via @fontsource — no external font CDN
 - Angular `skew-brand`/`skew-fix` utilities echo the logo's raked badge; square corners, never rounded
+- Never use `animation-fill-mode: both`/`backwards` for entrance animations — it holds elements at `opacity: 0` before the animation runs, and on our near-black page that reads as a blank screen. Use the `animate-enter` utility (no fill-mode, no delay).
 - Progressive disclosure over dense filter pages — guide the customer step by step
 - OEM (factory) tire size is always recommended first; upgrades second
 

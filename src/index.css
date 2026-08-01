@@ -93,12 +93,36 @@
   }
 }
 
-/* Respect users who ask for reduced motion. */
+/*
+ * Entrance animation for hero content.
+ *
+ * Deliberately has NO animation-delay and NO fill-mode. `fill-mode: both`
+ * pins an element to the keyframe's opening frame (opacity: 0) until its
+ * animation runs — so anything that stops the animation from starting leaves
+ * the content permanently invisible, which on our near-black page looks like
+ * a blank screen. Without fill-mode the element's resting state is visible,
+ * so a missed animation costs a fade, never the content.
+ */
+@utility animate-enter {
+  animation: fade-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/*
+ * Respect users who ask for reduced motion. This is more common on Windows,
+ * where the OS "animation effects" toggle is frequently off, so this path gets
+ * far more real traffic than it does on macOS — it has to be airtight.
+ * fill-mode is forced off so no future `both` can strand content at opacity 0.
+ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    animation-fill-mode: none !important;
     transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
   }
 }
