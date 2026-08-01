@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.2] - 2026-07-28
+
+### Fixed
+
+- **The actual cause of the Windows crash / black screen.** `ScrollToTop` used
+  a concise arrow body — `useEffect(() => window.scrollTo(0, 0), [pathname])` —
+  which returns whatever `scrollTo` returns. React treats any non-undefined
+  return as the effect's cleanup function, so on the next navigation it called
+  that value and threw "1 is not a function" (a timer/handle id), tearing down
+  the app. Per spec `scrollTo` returns undefined, but extensions and
+  smooth-scroll polyfills commonly patch it — which is why only Windows
+  machines hit it. Now uses a block body so nothing is returned.
+
+  The 0.5.1 animation changes were real hardening but were not the root cause;
+  before the error boundary existed, this same crash is what produced the
+  black page.
+
 ## [0.5.1] - 2026-07-28
 
 ### Fixed

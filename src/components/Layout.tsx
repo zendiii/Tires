@@ -16,7 +16,15 @@ import Logo from './Logo'
 /** React Router keeps scroll position between pages; reset it on navigation. */
 function ScrollToTop() {
   const { pathname } = useLocation()
-  useEffect(() => window.scrollTo(0, 0), [pathname])
+  useEffect(() => {
+    // Block body, not a concise arrow: `() => window.scrollTo(0, 0)` returns
+    // whatever scrollTo returns, and React treats any non-undefined return as
+    // the effect's cleanup function. If anything on the page patches scrollTo
+    // to return a value (extensions and smooth-scroll polyfills do), React
+    // calls that value on the next navigation and throws "N is not a function",
+    // taking the whole app down.
+    window.scrollTo(0, 0)
+  }, [pathname])
   return null
 }
 
