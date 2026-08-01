@@ -22,29 +22,33 @@ export const FEATURES: { ecommerce: boolean } = {
  * Housecall Pro online booking.
  *
  * HOW TO FILL THIS IN:
- *   Housecall Pro → Marketing → Online Booking → copy your booking link.
- *   It looks like https://book.housecallpro.com/book/<company>/<token>
+ *   Housecall Pro → Marketing → Online Booking → copy the embed code. It
+ *   contains both values below:
+ *     <button data-token="..." data-orgname="..." ...>
  *
- * Leave it empty and the booking page degrades gracefully to a "call us"
- * card instead of rendering a dead button.
+ * Leave either empty and every booking CTA degrades to a contact card rather
+ * than a dead button.
  *
- * `embed`:
- *   false (default) — the CTA opens Housecall Pro's hosted booking page in a
- *     new tab. Always works, since it's an ordinary link.
- *   true — renders the booking flow inline in an iframe. Housecall Pro's page
- *     is built for this (transparent background, 100% height), but their app
- *     renders blank when it doesn't recognise the embedding domain. If you
- *     want inline booking, add this site's domain to the allowed/website
- *     field in Housecall Pro → Marketing → Online Booking, then flip this to
- *     true. An "open in a new tab" link always sits under the frame so a
- *     blank embed can never strand a customer.
+ * Do NOT embed the booking page in a plain <iframe>. Their booking app stays
+ * blank until it receives an `hcp:open` postMessage handshake, which only
+ * their widget script sends — see src/services/booking.ts.
  */
-export const BOOKING: { url: string; embed: boolean } = {
-  url: 'https://book.housecallpro.com/book/Dinos-Mobile-Tires/e65ad10111d648baa6621c7ebc6572f5?v2=true&attr=9642',
-  embed: false,
+export const BOOKING: { token: string; orgName: string } = {
+  token: 'e65ad10111d648baa6621c7ebc6572f5',
+  orgName: 'Dinos-Mobile-Tires',
 }
 
-export const BOOKING_CONFIGURED: boolean = BOOKING.url !== ''
+export const BOOKING_CONFIGURED: boolean =
+  BOOKING.token !== '' && BOOKING.orgName !== ''
+
+/**
+ * Housecall Pro's hosted booking page — the same URL their widget loads into
+ * its modal. Used as the no-JS / script-blocked fallback so a booking CTA is
+ * never a dead end.
+ */
+export const BOOKING_DIRECT_URL: string = BOOKING_CONFIGURED
+  ? `https://book.housecallpro.com/book/${BOOKING.orgName}/${BOOKING.token}?v2=true`
+  : ''
 
 /** Public contact + social. Leave a field empty to hide it from the UI. */
 export const SITE: {

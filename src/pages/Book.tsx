@@ -7,7 +7,8 @@
  * fallback rather than a dead button — a broken CTA is worse than none.
  */
 import { Link } from 'react-router-dom'
-import { BOOKING, BOOKING_CONFIGURED, SITE } from '../config/site'
+import { BOOKING_CONFIGURED, BOOKING_DIRECT_URL, SITE } from '../config/site'
+import BookButton from '../components/BookButton'
 
 const STEPS = [
   ['Pick a time', 'Choose a slot that works — mornings, afternoons, or weekends.'],
@@ -52,54 +53,26 @@ function BookingPanel() {
     )
   }
 
-  if (BOOKING.embed) {
-    return (
-      <div>
-        {/*
-         * Housecall Pro's page paints itself transparent, so the frame needs
-         * its own white backdrop. No lazy loading — the calendar is the point
-         * of this page, so it should start fetching immediately.
-         */}
-        <div className="border border-edge bg-white">
-          <iframe
-            src={BOOKING.url}
-            title="Book an appointment with Dino's Mobile Tires"
-            className="block h-[820px] w-full border-0"
-            allow="payment; geolocation; clipboard-write"
-            referrerPolicy="strict-origin-when-cross-origin"
-          />
-        </div>
-        <p className="mt-3 text-center text-sm text-neutral-500">
-          Calendar not loading?{' '}
-          <a
-            href={BOOKING.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-display text-brand hover:underline"
-          >
-            Open it in a new tab
-          </a>
-        </p>
-      </div>
-    )
-  }
-
   return (
     <div className="border border-edge bg-surface-card p-10 text-center">
       <p className="mx-auto mb-7 max-w-sm text-neutral-400">
-        Pick a time on our live calendar — it opens in a new tab so you don't
-        lose your place here.
+        Pick a time that works and tell us where to meet you — it takes about a
+        minute.
       </p>
-      <a
-        href={BOOKING.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="skew-brand inline-block bg-brand px-10 py-4 transition-colors hover:bg-brand-hover"
-      >
-        <span className="skew-fix block font-display text-lg text-white">
-          Open the Booking Calendar
-        </span>
-      </a>
+      <BookButton className="skew-brand inline-block bg-brand px-10 py-4 text-lg text-white transition-colors hover:bg-brand-hover">
+        Book Online
+      </BookButton>
+      <p className="mt-5 text-xs text-neutral-600">
+        Trouble with the booking window?{' '}
+        <a
+          href={BOOKING_DIRECT_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-neutral-400 underline hover:text-brand"
+        >
+          Open it in a new tab
+        </a>
+      </p>
     </div>
   )
 }

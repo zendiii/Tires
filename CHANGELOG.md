@@ -7,15 +7,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-07-28
+
+### Added
+
+- `BookButton`: one booking CTA used sitewide (header, hero, preview banner,
+  tire detail, cart). Renders as a real link to the hosted booking page and
+  upgrades to Housecall Pro's in-page modal once their widget loads
+- `src/services/booking.ts`: loads the Housecall Pro widget script exactly once
+  and exposes `openBookingModal()`
+- "See how mobile installation works" link on the landing page, so `/book`
+  stays reachable now that the header CTA opens the modal directly
+
 ### Fixed
 
-- Housecall Pro booking rendered as a blank iframe: their booking app doesn't
-  boot in a cross-origin frame unless the embedding domain is recognised.
-  Booking now defaults to opening the hosted calendar in a new tab
-  (`BOOKING.embed = false`), which always works. The inline embed remains
-  available once the domain is allow-listed in Housecall Pro, and now loads
-  eagerly with an "open in a new tab" link beneath it so a blank frame can
-  never strand a customer.
+- **Booking rendered as a blank white box.** Their booking app stays empty
+  until it receives an `hcp:open` postMessage handshake, which only Housecall
+  Pro's own widget script sends — a hand-rolled `<iframe>` never gets it. Now
+  integrated via the official widget script, which owns the iframe and the
+  handshake. (The earlier guess that the embedding domain needed allow-listing
+  was wrong; framing was never blocked.)
+
+### Changed
+
+- `BOOKING` config now holds `token` + `orgName` (both from the Housecall Pro
+  embed code) instead of a pasted URL; the hosted booking URL is derived from
+  them, matching what their script builds
+- Booking modal iframe preloads (`disableLazy=true`) so it opens instantly
 
 ## [0.4.0] - 2026-07-11
 

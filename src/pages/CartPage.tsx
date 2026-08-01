@@ -14,6 +14,7 @@ import { getTireById } from '../services/catalog'
 import { useCart } from '../context/CartContext'
 import { FEATURES } from '../config/site'
 import TireGraphic from '../components/TireGraphic'
+import BookButton from '../components/BookButton'
 
 export default function CartPage() {
   const { items, count, updateQuantity, removeItem } = useCart()
@@ -49,9 +50,9 @@ export default function CartPage() {
           installation and we'll source your set and confirm pricing.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Link to="/book" className="skew-brand bg-brand px-7 py-3 hover:bg-brand-hover">
-            <span className="skew-fix block font-display text-sm text-white">Schedule Service</span>
-          </Link>
+          <BookButton className="skew-brand bg-brand px-7 py-3 text-sm text-white transition-colors hover:bg-brand-hover">
+            Schedule Service
+          </BookButton>
           <Link
             to="/shop/vehicle"
             className="skew-brand border border-edge px-7 py-3 transition-colors hover:border-brand"

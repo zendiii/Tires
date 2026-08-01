@@ -9,6 +9,7 @@
  */
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
+import BookButton from '../components/BookButton'
 import { FEATURES } from '../config/site'
 
 const PROMISES = [
@@ -49,13 +50,15 @@ export default function Home() {
           shop. Pick a time and we'll handle the rest.
         </p>
 
+        <BookButton className="skew-brand mt-10 animate-[fade-up_0.7s_ease_0.35s_both] bg-brand px-12 py-5 text-xl text-white transition-colors hover:bg-brand-hover sm:text-2xl">
+          Schedule Service
+        </BookButton>
+
         <Link
           to="/book"
-          className="skew-brand mt-10 animate-[fade-up_0.7s_ease_0.35s_both] bg-brand px-12 py-5 transition-colors hover:bg-brand-hover"
+          className="mt-6 animate-[fade-up_0.7s_ease_0.4s_both] font-display text-sm text-neutral-400 transition-colors hover:text-brand"
         >
-          <span className="skew-fix block font-display text-xl text-white sm:text-2xl">
-            Schedule Service
-          </span>
+          See how mobile installation works →
         </Link>
       </header>
 

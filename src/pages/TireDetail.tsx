@@ -12,6 +12,7 @@ import { useCart } from '../context/CartContext'
 import { FEATURES } from '../config/site'
 import TireGraphic from '../components/TireGraphic'
 import PreviewBanner from '../components/PreviewBanner'
+import BookButton from '../components/BookButton'
 
 export default function TireDetail() {
   const { id } = useParams()
@@ -126,14 +127,9 @@ export default function TireDetail() {
             </>
           ) : (
             <div className="mt-8">
-              <Link
-                to="/book"
-                className="skew-brand inline-block bg-brand px-8 py-3.5 transition-colors hover:bg-brand-hover"
-              >
-                <span className="skew-fix block font-display text-white">
-                  Book an Install with This Tire
-                </span>
-              </Link>
+              <BookButton className="skew-brand inline-block bg-brand px-8 py-3.5 text-white transition-colors hover:bg-brand-hover">
+                Book an Install with This Tire
+              </BookButton>
               <p className="mt-4 text-sm text-neutral-500">
                 Online ordering isn't live yet. Book an appointment and we'll
                 source this set and confirm real pricing before we come out.

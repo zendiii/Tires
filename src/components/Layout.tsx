@@ -10,6 +10,7 @@ import { useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { FEATURES, SITE } from '../config/site'
 import { InstagramIcon } from './icons'
+import BookButton from './BookButton'
 import Logo from './Logo'
 
 /** React Router keeps scroll position between pages; reset it on navigation. */
@@ -59,12 +60,9 @@ export default function Layout() {
               </NavLink>
             )}
 
-            <NavLink
-              to="/book"
-              className="skew-brand bg-brand px-5 py-2.5 transition-colors hover:bg-brand-hover"
-            >
-              <span className="skew-fix block font-display text-sm text-white">Book Now</span>
-            </NavLink>
+            <BookButton className="skew-brand bg-brand px-5 py-2.5 text-sm text-white transition-colors hover:bg-brand-hover">
+              Book Now
+            </BookButton>
           </nav>
         </div>
       </header>

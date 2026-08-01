@@ -23,7 +23,7 @@ Product vision lives in goal.md — read it before feature work.
 ## Current Phase
 
 - Scheduling is the primary conversion path; tire e-commerce is gated behind `FEATURES.ecommerce` in src/config/site.ts until live inventory/pricing APIs exist. Shop pages stay browsable but show a preview banner and disabled Add to Cart.
-- Booking runs on Housecall Pro. The booking URL is account-specific (Marketing → Online Booking) and lives in `BOOKING.url`; never invent one — an empty value degrades to a contact fallback by design.
+- Booking runs on Housecall Pro's widget script (src/services/booking.ts), triggered by `BookButton`. Never hand-roll an `<iframe>` of the booking URL — their app stays blank until it gets an `hcp:open` postMessage that only their script sends. Token/orgName are account-specific (Marketing → Online Booking); never invent them.
 
 ## Conventions
 

@@ -8,7 +8,8 @@ below for detail.
 
 | Task | File(s) to edit |
 |---|---|
-| **Paste in the Housecall Pro booking link** | `src/config/site.ts` → `BOOKING.url` (get it from Housecall Pro → Marketing → Online Booking) |
+| **Update Housecall Pro booking** | `src/config/site.ts` → `BOOKING.token` / `BOOKING.orgName` (both appear in the embed code at Housecall Pro → Marketing → Online Booking) |
+| Change how the booking CTA looks or behaves | `src/components/BookButton.tsx` |
 | **Turn tire shopping back on** | `src/config/site.ts` → `FEATURES.ecommerce = true`. One flag re-enables Add to Cart, the cart, checkout, and drops every "coming soon" label sitewide. |
 | Change the Instagram / phone number | `src/config/site.ts` → `SITE` |
 | **Implement the real backend APIs** | `src/services/catalog.ts` and `src/services/fitment.ts` — replace the `fakeFetch(...)` bodies with real `fetch('/api/...')` calls. Nothing outside `src/services/` needs to change. |
@@ -100,6 +101,7 @@ difference.
 | File | Purpose |
 |---|---|
 | `api.ts` | Placeholder plumbing: `fakeFetch()` simulates network latency; `DEBUG_SERVICES` flag logs simulated calls |
+| `booking.ts` | **Real** integration (not a placeholder): loads the Housecall Pro widget script once and opens its booking modal. Explains why a plain iframe of the booking URL renders blank |
 | `catalog.ts` | Tire queries: search by size with filters, get by id, filter options, available sizes. Future: `GET /api/tires...` |
 | `fitment.ts` | Vehicle flow queries: years → makes → models → trims → fitment. Future: serverless proxy to a fitment API (keeps the API key secret) |
 
@@ -115,6 +117,7 @@ difference.
 |---|---|
 | `Layout.tsx` | App shell: sticky header with logo, nav + Book Now CTA, footer with Instagram link, scroll reset on navigation |
 | `Logo.tsx` | The brand lockup (horizontal + square variants). Uses cropped PNGs rather than the source SVGs — see the file's comment for why |
+| `BookButton.tsx` | The booking CTA used everywhere. A real link that upgrades to the Housecall Pro modal when their widget is ready |
 | `PreviewBanner.tsx` | The "pricing isn't live yet" notice on shopping pages. Renders nothing once `FEATURES.ecommerce` is true |
 | `icons.tsx` | Inline social/UI glyphs (currently Instagram) |
 | `TireCard.tsx` | One tire in a results grid: brand, model, image, price, warranty, rating, stock, OEM badge, View Details / Add to Cart |

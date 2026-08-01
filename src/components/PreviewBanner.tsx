@@ -4,8 +4,8 @@
  * Two jobs: set the expectation that prices/stock aren't live yet, and route
  * the customer to the thing we CAN do today — book an installation.
  */
-import { Link } from 'react-router-dom'
 import { FEATURES } from '../config/site'
+import BookButton from './BookButton'
 
 export default function PreviewBanner() {
   if (FEATURES.ecommerce) return null
@@ -20,12 +20,9 @@ export default function PreviewBanner() {
         placeholders while we connect our inventory feed. Book an install and
         we'll source your set and confirm real pricing.
       </p>
-      <Link
-        to="/book"
-        className="skew-brand shrink-0 bg-brand px-6 py-2.5 transition-colors hover:bg-brand-hover"
-      >
-        <span className="skew-fix block font-display text-sm text-white">Schedule Service</span>
-      </Link>
+      <BookButton className="skew-brand shrink-0 bg-brand px-6 py-2.5 text-sm text-white transition-colors hover:bg-brand-hover">
+        Schedule Service
+      </BookButton>
     </div>
   )
 }
