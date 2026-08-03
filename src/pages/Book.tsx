@@ -12,13 +12,12 @@ import BookButton from '../components/BookButton'
 
 const STEPS = [
   ['Pick a time', 'Choose a slot that works — mornings, afternoons, or weekends.'],
-  ['Tell us where', 'Your driveway, your office lot, or our shop. We bring the equipment.'],
+  ['Tell us where', 'Your driveway or your office lot. We bring the equipment.'],
   ['We handle the rest', 'Mount, balance, torque to spec, and haul away your old tires.'],
 ]
 
 const SERVICES = [
   ['Mobile Installation', 'We come to you — no waiting room, no lost afternoon.'],
-  ['In-Shop Installation', "Drop by Dino's and we'll get you back on the road."],
   ['Flat Repair & Rotation', 'Quick service on the spot, wherever you are.'],
   ['TPMS Service', 'Sensor reset and replacement handled with the install.'],
 ]

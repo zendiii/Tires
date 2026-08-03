@@ -14,7 +14,7 @@ import { FEATURES } from '../config/site'
 
 const PROMISES = [
   ['We Come to You', 'Mobile installation at your home or office.'],
-  ['South Florida', 'Serving the greater South Florida area.'],
+  ['South Florida', 'Serving the greater South Florida area. M-F 8am–7pm | Sat 8am–5pm.'],
   ['Done Right', 'Mounted, balanced, and torqued to spec.'],
 ]
 
