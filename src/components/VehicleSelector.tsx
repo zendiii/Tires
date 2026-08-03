@@ -1,9 +1,5 @@
 /*
- * Progressive Year → Make → Model → Trim selector (goal.md: progressive
- * disclosure — one decision at a time, never a wall of dropdowns).
- *
- * Each completed step collapses into a small "chip" the customer can tap to
- * go back; the current step shows its options as large buttons.
+ * 
  */
 import { useEffect, useState } from 'react'
 import type { Vehicle } from '../types'

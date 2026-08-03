@@ -1,14 +1,5 @@
 /*
- * Catches render-time errors anywhere below it.
- *
- * Without this, one uncaught error unmounts the entire React tree and the
- * visitor is left staring at the bare dark <body> — a black screen with no
- * explanation, recoverable only by refreshing. This turns that into a readable
- * message with a way out, and logs the error so it shows up in the console
- * instead of vanishing.
- *
- * Must be a class component: React only exposes error catching via the
- * componentDidCatch / getDerivedStateFromError lifecycle.
+ * 
  */
 import { Component } from 'react'
 import type { ErrorInfo, ReactNode } from 'react'

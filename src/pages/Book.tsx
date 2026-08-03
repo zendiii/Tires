@@ -86,7 +86,7 @@ export default function Book() {
           Book your <span className="text-brand">install</span>
         </h1>
         <p className="mx-auto mt-5 max-w-lg text-neutral-400">
-          Mobile installation at your home or office, or in-shop service —
+          Mobile installation at your home or office —
           pick a time and we'll take it from there.
         </p>
       </header>

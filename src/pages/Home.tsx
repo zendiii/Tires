@@ -14,7 +14,7 @@ import { FEATURES } from '../config/site'
 
 const PROMISES = [
   ['We Come to You', 'Mobile installation at your home or office.'],
-  ['Or Visit the Shop', 'Same-day fitting while you wait.'],
+  ['South Florida', 'Serving the greater South Florida area.'],
   ['Done Right', 'Mounted, balanced, and torqued to spec.'],
 ]
 
@@ -46,8 +46,7 @@ export default function Home() {
           <span className="text-brand">wherever you are.</span>
         </h1>
         <p className="mx-auto mt-6 max-w-md animate-enter text-neutral-400">
-          Mobile tire service that comes to your driveway — or bring it by the
-          shop. Pick a time and we'll handle the rest.
+          Mobile tire service that comes to your driveway — Pick a time and we'll handle the rest.
         </p>
 
         <BookButton className="skew-brand mt-10 animate-enter bg-brand px-12 py-5 text-xl text-white transition-colors hover:bg-brand-hover sm:text-2xl">

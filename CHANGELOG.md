@@ -11,6 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Click-to-call phone link with a phone icon in the footer, under the Instagram
   link; number lives in `SITE.phone` / `SITE.phoneDisplay`
+- Footer build credit linking to the developer's GitHub (`SITE.builderUrl`)
+- `scripts/atd-check.mjs`: read-only probe that validates ATD/Tirewire
+  credentials, lists supplier connections (finding the ATD `ConnectionID`), and
+  runs a sample tire search. Reads credentials from the environment only
+- `.env.example` documenting server-only supplier credentials; `.env*.local`
+  added to .gitignore
+- ARCHITECTURE.md section recording the ATD/Tirewire API contract (SOAP,
+  auth model, key operations) and its architectural consequences
 
 ## [0.5.2] - 2026-07-28
 

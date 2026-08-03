@@ -1,6 +1,5 @@
 /*
- * Close-up wheel/tire visualization for the shop-by-vehicle flow (goal.md:
- * focus on the wheel, not the whole car). Tire proportions are driven by the
+ * Close-up wheel/tire visualization for the shop-by-vehicle flow Tire proportions are driven by the
  * actual size string — a taller sidewall or bigger rim visibly changes the
  * drawing, and CSS transitions make size switches feel smooth.
  *

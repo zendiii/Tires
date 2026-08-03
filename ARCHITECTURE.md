@@ -41,6 +41,35 @@ Components never import JSON directly. Every data access goes through
 That's the seam where the backend gets swapped in — the UI won't know the
 difference.
 
+## Backend plan: tire inventory & ordering (ATD)
+
+Supplier is **American Tire Distributors**, reached through the **Tirewire
+Connections Center** API. Findings from its public WSDLs:
+
+- **SOAP 1.1 over HTTPS** — `https://ws.tirewire.com/connectionscenter/*.asmx`
+  (`commonservice`, `productsservice`, `ordersservice`, `wheelsservice`).
+  Always HTTPS: credentials ride on every request.
+- **Auth:** `AccessKey` + `GroupToken` per call, plus a `ConnectionID`
+  identifying your ATD account among your supplier connections.
+- **Key operations:** `ValidateGroupToken`, `GetConnectionsByGroup`,
+  `GetAllMakes`, `GetTires`, `GetTireByID`, `GetShipToOptions`, `PlaceOrder`.
+- `GetTires` accepts `TireSize` **or** `Width`/`Aspect`/`Rim` — the same fields
+  `parseTireSize()` already produces, so our search model maps over directly.
+
+Consequences for the architecture:
+
+1. **Credentials can never reach the browser.** The frontend calls our own
+   `/api/*` serverless functions on Vercel; those hold the keys and talk SOAP.
+   Never prefix these with `VITE_` — Vite inlines those into the bundle.
+2. **Don't proxy per page view.** Inventory refreshes hourly and pricing daily
+   across millions of SKUs, so catalog/pricing data gets cached (Supabase), with
+   a live stock check only at checkout.
+3. `src/services/catalog.ts` keeps its current signatures — only the bodies
+   change, from reading bundled JSON to calling `/api/*`.
+
+Run `node scripts/atd-check.mjs` (credentials via env) to verify access and
+discover your ATD `ConnectionID`.
+
 ## File tour
 
 ### Root

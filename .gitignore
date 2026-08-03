@@ -27,3 +27,7 @@ dist-ssr
 goal.md
 AI-BestPractices.md
 .DS_Store
+
+# Local secrets
+.env.local
+.env*.local

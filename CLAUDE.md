@@ -27,6 +27,9 @@ Product vision lives in goal.md — read it before feature work.
 - Scheduling is the primary conversion path; tire e-commerce is gated behind `FEATURES.ecommerce` in src/config/site.ts until live inventory/pricing APIs exist. Shop pages stay browsable but show a preview banner and disabled Add to Cart.
 - Booking runs on Housecall Pro's widget script (src/services/booking.ts), triggered by `BookButton`. Never hand-roll an `<iframe>` of the booking URL — their app stays blank until it gets an `hcp:open` postMessage that only their script sends. Token/orgName are account-specific (Marketing → Online Booking); never invent them.
 
+- Tire supply is ATD via the Tirewire Connections Center SOAP API (AccessKey + GroupToken + ConnectionID). Details and consequences in ARCHITECTURE.md; probe access with `node scripts/atd-check.mjs`.
+- Supplier credentials are server-only: they live in Vercel env vars and are used by `/api/*` serverless functions. Never prefix them `VITE_` — Vite inlines those into the public bundle.
+
 ## Conventions
 
 - SemVer starting at 0.1.0; update CHANGELOG.md ([Unreleased] section) with each significant change

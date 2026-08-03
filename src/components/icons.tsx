@@ -1,6 +1,5 @@
 /*
- * Inline brand icons. Kept as components (not image files) so they inherit
- * `currentColor` and stay crisp at any size.
+ *
  */
 
 /** Instagram glyph, 24×24 viewBox. */

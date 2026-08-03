@@ -1,10 +1,5 @@
 /*
- * One tire in a results grid. Shows everything goal.md asks for:
- * brand, model, image, price, warranty, rating, availability,
- * View Details + Add to Cart, and an OEM badge when applicable.
- *
- * Styling follows the logo: square corners, a raked red badge, and the
- * condensed display face for names and prices.
+ * 
  */
 import { Link } from 'react-router-dom'
 import type { Tire } from '../types'

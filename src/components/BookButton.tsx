@@ -1,10 +1,5 @@
 /*
- * The single booking call-to-action, used everywhere a customer can schedule.
  *
- * Progressive enhancement: it renders as a real link to Housecall Pro's hosted
- * booking page, so it works with JavaScript broken, the widget script blocked,
- * or the page still loading. Once their widget is ready, clicks are intercepted
- * and open the modal in place instead — no navigation, no lost context.
  */
 import { useEffect, useState } from 'react'
 import type { MouseEvent, ReactNode } from 'react'

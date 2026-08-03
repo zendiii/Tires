@@ -1,10 +1,5 @@
 /*
- * Stylized SVG tire illustration — the placeholder for real product
- * photography. Drawing it (instead of using a stock photo) keeps every card
- * visually consistent and ships zero image bytes.
- *
- * The brand red appears on the hub only — a small accent, the way a
- * manufacturer's center cap reads on a real wheel.
+ * 
  */
 export default function TireGraphic({ className = '' }: { className?: string }) {
   return (
