@@ -56,8 +56,13 @@ export const SITE: {
   /** E.164 for the tel: link, plus a human-readable form. Both or neither. */
   phone: string
   phoneDisplay: string
+  /** Build credit shown in the footer. */
+  builderName: string
+  builderUrl: string
 } = {
   instagramUrl: 'https://www.instagram.com/dinosmobiletires/',
-  phone: '',
-  phoneDisplay: '',
+  phone: '+19547790898',
+  phoneDisplay: '(954) 779-0898',
+  builderName: 'SYVN',
+  builderUrl: 'https://github.com/zendiii',
 }

@@ -17,3 +17,18 @@ export function InstagramIcon({ className = '' }: { className?: string }) {
     </svg>
   )
 }
+
+/** Telephone handset, 24×24 viewBox. */
+export function PhoneIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 011 1V20a1 1 0 01-1 1C10.4 21 3 13.6 3 4a1 1 0 011-1h3.5a1 1 0 011 1c0 1.25.2 2.45.57 3.57a1 1 0 01-.25 1.02l-2.2 2.2z" />
+    </svg>
+  )
+}

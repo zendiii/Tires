@@ -9,7 +9,7 @@ import { NavLink, Link, Outlet, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useCart } from '../context/CartContext'
 import { FEATURES, SITE } from '../config/site'
-import { InstagramIcon } from './icons'
+import { InstagramIcon, PhoneIcon } from './icons'
 import BookButton from './BookButton'
 import Logo from './Logo'
 
@@ -87,19 +87,41 @@ export default function Layout() {
             Mobile Installation · In-Shop Installation · Flat Repair
           </p>
 
-          <a
-            href={SITE.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex items-center gap-2 text-neutral-500 transition-colors hover:text-brand"
-            aria-label="Follow Dino's Mobile Tires on Instagram"
-          >
-            <InstagramIcon className="h-5 w-5" />
-            <span className="font-display text-xs">@dinosmobiletires</span>
-          </a>
+          <div className="flex flex-col items-center gap-3">
+            <a
+              href={SITE.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-neutral-500 transition-colors hover:text-brand"
+              aria-label="Follow Dino's Mobile Tires on Instagram"
+            >
+              <InstagramIcon className="h-5 w-5" />
+              <span className="font-display text-xs">@dinosmobiletires</span>
+            </a>
+
+            {SITE.phone && (
+              <a
+                href={`tel:${SITE.phone}`}
+                className="flex items-center gap-2 text-neutral-500 transition-colors hover:text-brand"
+                aria-label={`Call Dino's Mobile Tires at ${SITE.phoneDisplay}`}
+              >
+                <PhoneIcon className="h-5 w-5" />
+                <span className="font-display text-xs">{SITE.phoneDisplay}</span>
+              </a>
+            )}
+          </div>
 
           <p className="text-xs text-neutral-600">
-            © {new Date().getFullYear()} Dino's Mobile Tires — v{__APP_VERSION__}
+            © {new Date().getFullYear()} Dino's Mobile Tires — built by{' '}
+            <a
+              href={SITE.builderUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-display text-neutral-400 underline underline-offset-2 transition-colors hover:text-brand"
+            >
+              {SITE.builderName}
+            </a>{' '}
+            — v{__APP_VERSION__}
           </p>
         </div>
       </footer>

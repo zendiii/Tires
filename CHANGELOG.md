@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Click-to-call phone link with a phone icon in the footer, under the Instagram
+  link; number lives in `SITE.phone` / `SITE.phoneDisplay`
+
 ## [0.5.2] - 2026-07-28
 
 ### Fixed
