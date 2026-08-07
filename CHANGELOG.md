@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-08-07
+
 ### Added
+
+- Rotating photo backdrop behind the landing hero (`HeroPhotos`), clipped to
+  the logo's raked hexagon so the photography reads as part of the brand mark.
+  Crossfades every 5.5s, holds a single still for `prefers-reduced-motion`, and
+  mounts photos progressively so the page fetches one image instead of eight
+- `scripts/optimize-photos.mjs`: turns the raw photo dump into web-sized JPEGs
+  (30MB → 1.8MB), stripping screenshot chrome. Raw originals in
+  `src/assets/Cameo/` are gitignored — only optimized output is committed
+- `src/data/photos.ts`: photo manifest with alt text and per-photo
+  `object-position`, since tall phone photos crop hard into a wide band
 
 - Click-to-call phone link with a phone icon in the footer, under the Instagram
   link; number lives in `SITE.phone` / `SITE.phoneDisplay`

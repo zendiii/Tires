@@ -31,3 +31,8 @@ AI-BestPractices.md
 # Local secrets
 .env.local
 .env*.local
+
+# Raw photo originals (~30MB) — optimized output in src/assets/photos/ is
+# committed instead. Regenerate with: node scripts/optimize-photos.mjs
+# KEEP YOUR OWN BACKUP of this folder.
+src/assets/Cameo/

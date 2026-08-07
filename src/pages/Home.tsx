@@ -10,6 +10,7 @@
 import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
 import BookButton from '../components/BookButton'
+import HeroPhotos from '../components/HeroPhotos'
 import { FEATURES } from '../config/site'
 
 const PROMISES = [
@@ -33,32 +34,33 @@ const SHOP_PATHS = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center px-6 py-20 sm:py-24">
-      {/* Primary: booking */}
-      <header className="flex flex-col items-center text-center">
-        <Logo
-          variant="square"
-          className="h-28 w-auto animate-enter sm:h-36"
-        />
-        <h1 className="mt-10 max-w-3xl animate-enter font-display text-5xl sm:text-7xl">
-          Tires installed
-          <br />
-          <span className="text-brand">wherever you are.</span>
-        </h1>
-        <p className="mx-auto mt-6 max-w-md animate-enter text-neutral-400">
-          Mobile tire service that comes to your driveway — Pick a time and we'll handle the rest.
-        </p>
+    <div className="flex flex-col items-center px-6 py-12 sm:py-16">
+      {/* Primary: booking. Real job photos rotate behind the headline. */}
+      <header className="relative w-full max-w-5xl">
+        <HeroPhotos />
 
-        <BookButton className="skew-brand mt-10 animate-enter bg-brand px-12 py-5 text-xl text-white transition-colors hover:bg-brand-hover sm:text-2xl">
-          Schedule Service
-        </BookButton>
+        <div className="relative flex flex-col items-center px-4 py-16 text-center sm:px-10 sm:py-24">
+          <Logo variant="square" className="h-28 w-auto animate-enter sm:h-36" />
+          <h1 className="mt-10 max-w-3xl animate-enter font-display text-5xl drop-shadow-lg sm:text-7xl">
+            Tires installed
+            <br />
+            <span className="text-brand">wherever you are.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-md animate-enter text-neutral-300 drop-shadow">
+            Mobile tire service that comes to your driveway — Pick a time and we'll handle the rest.
+          </p>
 
-        <Link
-          to="/book"
-          className="mt-6 animate-enter font-display text-sm text-neutral-400 transition-colors hover:text-brand"
-        >
-          See how mobile installation works →
-        </Link>
+          <BookButton className="skew-brand mt-10 animate-enter bg-brand px-12 py-5 text-xl text-white shadow-xl shadow-black/40 transition-colors hover:bg-brand-hover sm:text-2xl">
+            Schedule Service
+          </BookButton>
+
+          <Link
+            to="/book"
+            className="mt-6 animate-enter font-display text-sm text-neutral-300 transition-colors hover:text-brand"
+          >
+            See how mobile installation works →
+          </Link>
+        </div>
       </header>
 
       <div className="mt-20 grid max-w-3xl animate-enter gap-10 text-center sm:grid-cols-3">

@@ -8,6 +8,8 @@ below for detail.
 
 | Task | File(s) to edit |
 |---|---|
+| Add / remove / reorder hero photos | Drop originals in `src/assets/Cameo/`, add an entry to `scripts/optimize-photos.mjs`, run it, then list the photo in `src/data/photos.ts` |
+| Change how fast photos rotate, or the scrim darkness | `src/components/HeroPhotos.tsx` (`HOLD_MS`, `FADE_MS`, the `bg-surface-dark/70` overlay) |
 | **Update Housecall Pro booking** | `src/config/site.ts` → `BOOKING.token` / `BOOKING.orgName` (both appear in the embed code at Housecall Pro → Marketing → Online Booking) |
 | Change how the booking CTA looks or behaves | `src/components/BookButton.tsx` |
 | **Turn tire shopping back on** | `src/config/site.ts` → `FEATURES.ecommerce = true`. One flag re-enables Add to Cart, the cart, checkout, and drops every "coming soon" label sitewide. |
@@ -115,6 +117,8 @@ discover your ATD `ConnectionID`.
 | File | Purpose |
 |---|---|
 | `CMYK/` | The original logo package from the designer: EPS / PDF / PNG / SVG / WebP, each in Black, White, Full (color-on-light), and OverBlack (color-on-dark) variants |
+| `Cameo/` | **Not in git.** Raw job photos straight off a phone (~30MB). Keep your own backup — `scripts/optimize-photos.mjs` reads from here |
+| `photos/` | Optimized, committed output of that script — what the site actually ships |
 | `logo-horizontal.png` | OverBlack horizontal lockup, cropped to content — used in the header and footer |
 | `logo-square.png` | OverBlack stacked lockup, cropped to content — used in the hero |
 
@@ -148,6 +152,7 @@ discover your ATD `ConnectionID`.
 | `Logo.tsx` | The brand lockup (horizontal + square variants). Uses cropped PNGs rather than the source SVGs — see the file's comment for why |
 | `BookButton.tsx` | The booking CTA used everywhere. A real link that upgrades to the Housecall Pro modal when their widget is ready |
 | `ErrorBoundary.tsx` | Catches render errors so a crash shows a readable message instead of a blank black page |
+| `HeroPhotos.tsx` | Rotating job-photo backdrop for the landing hero, clipped to the logo's raked hexagon and scrimmed for text contrast |
 | `PreviewBanner.tsx` | The "pricing isn't live yet" notice on shopping pages. Renders nothing once `FEATURES.ecommerce` is true |
 | `icons.tsx` | Inline social/UI glyphs (currently Instagram) |
 | `TireCard.tsx` | One tire in a results grid: brand, model, image, price, warranty, rating, stock, OEM badge, View Details / Add to Cart |
