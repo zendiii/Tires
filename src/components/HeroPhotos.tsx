@@ -66,8 +66,13 @@ export default function HeroPhotos() {
         ) : null,
       )}
 
-      {/* Scrim: flat darkening so the display type always clears contrast... */}
-      <div className="absolute inset-0 bg-surface-dark/70" />
+      {/*
+       * Scrim: flat darkening so the display type always clears contrast.
+       * This number is the brightness dial — lower is brighter photography.
+       * Usable range is roughly /45 to /75; below about /45 the white headline
+       * starts losing contrast against the bright daylight shots.
+       */}
+      <div className="absolute inset-0 bg-surface-dark/55" />
       {/* ...plus edges fading to the page colour so the panel sits in the page. */}
       <div className="absolute inset-0 bg-gradient-to-b from-surface-dark via-transparent to-surface-dark" />
     </div>
