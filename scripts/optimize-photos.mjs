@@ -34,13 +34,13 @@ const QUALITY = 60
  */
 const PHOTOS = [
   { match: '6.40.07', name: 'van-branding' },
+  { match: '7.25.49', name: 'lamborghini-urus' },
   { match: '6.37.04', name: 'porsche-gt3', cropTop: 60 },
   { match: '6.38.15', name: 'bmw-m5' },
   { match: '6.39.06', name: 'van-bmw-m3' },
   { match: '6.39.29', name: 'kia-service' },
   { match: '2AED8509', name: 'mounting-wheel' },
   { match: '6.39.49', name: 'van-loaded' },
-  { match: '6.38.41', name: 'classic-truck' },
 ]
 
 const sips = (args) => execFileSync('sips', args, { stdio: 'pipe' })
@@ -86,6 +86,16 @@ for (const photo of PHOTOS) {
   if (input !== src) rmSync(input, { force: true })
   totalAfter += statSync(out).size
   console.log(`  ${photo.name.padEnd(16)} ${String(kb(src)).padStart(5)}KB -> ${String(kb(out)).padStart(4)}KB`)
+}
+
+// Drop outputs whose source is no longer listed, so removing a photo from the
+// manifest doesn't leave an orphan shipping in the bundle.
+const expected = new Set(PHOTOS.map((p) => `${p.name}.jpg`))
+for (const file of readdirSync(OUT_DIR)) {
+  if (file.endsWith('.jpg') && !expected.has(file)) {
+    rmSync(join(OUT_DIR, file))
+    console.log(`  removed stale ${file}`)
+  }
 }
 
 console.log(
