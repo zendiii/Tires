@@ -36,3 +36,6 @@ AI-BestPractices.md
 # committed instead. Regenerate with: node scripts/optimize-photos.mjs
 # KEEP YOUR OWN BACKUP of this folder.
 src/assets/Cameo/
+
+# Local scratch notes — not part of the shipped project
+notes/
