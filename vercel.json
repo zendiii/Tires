@@ -1,7 +1,6 @@
 {
   "rewrites": [
     {
-      "comment": "Serve the SPA for every route EXCEPT /api/*, which must reach the serverless functions.",
       "source": "/((?!api/).*)",
       "destination": "/index.html"
     }

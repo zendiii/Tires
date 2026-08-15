@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Vercel deploys failed schema validation: the rewrite rule in `vercel.json`
+  carried a `comment` key, and Vercel rejects unknown properties. JSON has no
+  comment syntax, so the explanation of the `/((?!api/).*)` lookahead moved to
+  ARCHITECTURE.md
+
 ## [0.7.0] - 2026-08-07
 
 ### Added

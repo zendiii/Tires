@@ -107,7 +107,7 @@ markup and never multiplied — it's a tax, not merchandise. There's an optional
 |---|---|
 | `package.json` | Dependencies, scripts (`dev` / `build` / `lint` / `preview`), and the app version (single source of truth, injected into the footer at build time) |
 | `vite.config.ts` | Build config: React plugin, Tailwind v4 plugin, version injection |
-| `vercel.json` | SPA rewrite — serves `index.html` for every URL so React Router deep links (e.g. `/shop/vehicle`) survive a refresh on Vercel |
+| `vercel.json` | SPA rewrite — serves `index.html` for every URL so React Router deep links (e.g. `/shop/vehicle`) survive a refresh on Vercel. The source pattern is `/((?!api/).*)`: the negative lookahead is what keeps `/api/*` reaching the serverless functions instead of being handed the HTML shell. Do not simplify it to `/(.*)`. Vercel schema-validates this file and rejects unknown keys, so it cannot carry a `comment` field — the note lives here instead |
 | `index.html` | The single HTML shell; page `<title>` lives here |
 | `tsconfig.json` / `tsconfig.app.json` / `tsconfig.node.json` | TypeScript config (strict mode on; `app` covers `src/`, `node` covers `vite.config.ts`) |
 | `.oxlintrc.json` | Linter rules |
