@@ -46,15 +46,28 @@ export default function TireDetail() {
   const requestedSize = searchParams.get('size')
   const size = requestedSize && tire.sizes.includes(requestedSize) ? requestedSize : tire.sizes[0]
 
+  // Rows are dropped when the source doesn't carry that field — ATD supplies
+  // no category or ratings, so those simply don't appear on live results.
   const specs: [string, string][] = [
     ['Size', size],
-    ['Type', TIRE_CATEGORY_LABELS[tire.category]],
+    ...(tire.category ? ([['Type', TIRE_CATEGORY_LABELS[tire.category]]] as [string, string][]) : []),
     ['Load range', tire.loadRange],
+    ...(tire.speedRating ? ([['Speed rating', tire.speedRating]] as [string, string][]) : []),
     [
       'Mileage warranty',
       tire.mileageWarranty ? `${tire.mileageWarranty.toLocaleString()} miles` : 'None (performance)',
     ],
-    ['Rating', `★ ${tire.rating.toFixed(1)} (${tire.reviewCount.toLocaleString()} reviews)`],
+    ...(tire.rating !== undefined
+      ? ([
+          [
+            'Rating',
+            `★ ${tire.rating.toFixed(1)}${
+              tire.reviewCount !== undefined ? ` (${tire.reviewCount.toLocaleString()} reviews)` : ''
+            }`,
+          ],
+        ] as [string, string][])
+      : []),
+    ...(tire.fet ? ([['Federal excise tax', formatPrice(tire.fet)]] as [string, string][]) : []),
     ['Availability', tire.inStock ? 'In stock' : 'Out of stock'],
   ]
 

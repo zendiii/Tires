@@ -25,22 +25,39 @@ export interface TireSize {
   rimDiameter: number
 }
 
-/** One product in the catalog. Prices are per tire, USD. */
+/**
+ * One product in the catalog. Prices are per tire, USD.
+ *
+ * Fields are optional where our sample data has something a live supplier feed
+ * does not. ATD returns no ratings and doesn't classify tires into our
+ * marketing categories, so the UI must render without them.
+ */
 export interface Tire {
   id: string
   brand: string
   model: string
-  category: TireCategory
+  /** Absent on live supplier data. */
+  category?: TireCategory
   price: number
   /** Sizes this model is available in, e.g. ["275/55R20"]. */
   sizes: string[]
   /** Mileage warranty in miles; null for tires sold without one (common for performance). */
   mileageWarranty: number | null
-  rating: number
-  reviewCount: number
+  /** Sample-data only — ATD supplies no review data. */
+  rating?: number
+  reviewCount?: number
   /** Load range code, e.g. "SL" (standard), "XL" (extra load), "E" (heavy duty). */
   loadRange: string
   inStock: boolean
+
+  /* ---- present only on live supplier results ---- */
+  /** Manufacturer product shot from the supplier. */
+  imageUrl?: string
+  speedRating?: string
+  /** Federal excise tax per tire, USD. Passed through at cost, never marked up. */
+  fet?: number
+  /** ATD product code — required to place an order later. */
+  productCode?: string
 }
 
 /**

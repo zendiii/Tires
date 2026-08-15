@@ -29,6 +29,9 @@ Product vision lives in goal.md — read it before feature work.
 
 - Tire supply is ATD via the Tirewire Connections Center SOAP API (AccessKey + GroupToken + ConnectionID). Details and consequences in ARCHITECTURE.md; probe access with `node scripts/atd-check.mjs`.
 - Supplier credentials are server-only: they live in Vercel env vars and are used by `/api/*` serverless functions. Never prefix them `VITE_` — Vite inlines those into the public bundle.
+- Retail markup lives in `api/_lib/pricing.ts` and must never be imported from `src/` — anything in src/ ships to the browser, which would expose dealer cost and margin. ATD's `BuyPrice` stops at the serverless boundary.
+- Money is handled in integer cents on the server; the UI formats dollars.
+- `Tire.rating`/`reviewCount`/`category` are optional: ATD supplies none of them, so UI must render without them.
 
 ## Conventions
 

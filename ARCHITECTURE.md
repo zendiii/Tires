@@ -13,6 +13,8 @@ below for detail.
 | **Update Housecall Pro booking** | `src/config/site.ts` → `BOOKING.token` / `BOOKING.orgName` (both appear in the embed code at Housecall Pro → Marketing → Online Booking) |
 | Change how the booking CTA looks or behaves | `src/components/BookButton.tsx` |
 | **Turn tire shopping back on** | `src/config/site.ts` → `FEATURES.ecommerce = true`. One flag re-enables Add to Cart, the cart, checkout, and drops every "coming soon" label sitewide. |
+| **Change how much we mark tires up** | `api/_lib/pricing.ts` → `MARKUP_TIERS`. Server-only by design — see the warning at the top of that file |
+| **Source tires from ATD instead of sample JSON** | `src/config/site.ts` → `FEATURES.liveCatalog = true` (after the ATD env vars are set in Vercel) |
 | Change the Instagram / phone number | `src/config/site.ts` → `SITE` |
 | **Implement the real backend APIs** | `src/services/catalog.ts` and `src/services/fitment.ts` — replace the `fakeFetch(...)` bodies with real `fetch('/api/...')` calls. Nothing outside `src/services/` needs to change. |
 | Edit the theme (brand red, surfaces, fonts) | `src/index.css` — the `@theme` block holds every design token; Tailwind generates utilities (`bg-brand`, etc.) from it |
@@ -71,6 +73,31 @@ Consequences for the architecture:
 
 Run `node scripts/atd-check.mjs` (credentials via env) to verify access and
 discover your ATD `ConnectionID`.
+
+### Pricing and markup
+
+ATD returns **`BuyPrice`** (your dealer cost) and `Tax` (federal excise tax).
+The customer must never see either the cost or the margin, which is exactly why
+markup happens in `api/`, not in `src/`:
+
+```
+browser ──▶ /api/tires/search ──▶ ATD SOAP (BuyPrice, Tax)
+                   │
+                   ├─ applyMarkup(cost) → retail        api/_lib/pricing.ts
+                   └─ strips BuyPrice from the response
+browser ◀── retail price only
+```
+
+`api/_lib/pricing.ts` holds a tiered ladder: the markup percentage falls as cost
+rises, with a minimum dollar margin protecting cheap tires. FET is added *after*
+markup and never multiplied — it's a tax, not merchandise. There's an optional
+`mapCents` floor for brands that enforce Minimum Advertised Price.
+
+| Files | Role |
+|---|---|
+| `api/_lib/pricing.ts` | The markup ladder. **Never import from `src/`** |
+| `api/_lib/atd.ts` | SOAP client; maps ATD's response to a public shape with cost removed |
+| `api/tires/search.ts` | `GET /api/tires/search?size=275/55R20` |
 
 ## File tour
 

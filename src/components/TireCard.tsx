@@ -39,16 +39,31 @@ export default function TireCard({ tire, size, isOem = false }: TireCardProps) {
 
       <p className="font-display text-xs tracking-widest text-brand">{tire.brand}</p>
       <h3 className="mt-1 font-display text-xl text-white">{tire.model}</h3>
+      {/* Live supplier data has no category and no ratings, so each spec is
+          rendered only when we actually have it. */}
       <p className="mt-1.5 font-mono text-sm text-neutral-500">
-        {size} · {TIRE_CATEGORY_LABELS[tire.category]} · Load {tire.loadRange}
+        {[
+          size,
+          tire.category && TIRE_CATEGORY_LABELS[tire.category],
+          tire.speedRating,
+          `Load ${tire.loadRange}`,
+        ]
+          .filter(Boolean)
+          .join(' · ')}
       </p>
 
       <div className="mt-3 flex flex-wrap items-center gap-x-2 text-sm">
-        <span className="text-brand">★ {tire.rating.toFixed(1)}</span>
-        <span className="text-neutral-600">({tire.reviewCount.toLocaleString()})</span>
+        {tire.rating !== undefined && (
+          <>
+            <span className="text-brand">★ {tire.rating.toFixed(1)}</span>
+            {tire.reviewCount !== undefined && (
+              <span className="text-neutral-600">({tire.reviewCount.toLocaleString()})</span>
+            )}
+          </>
+        )}
         {tire.mileageWarranty && (
           <span className="text-neutral-400">
-            · {(tire.mileageWarranty / 1000).toFixed(0)}k mi warranty
+            {(tire.mileageWarranty / 1000).toFixed(0)}k mi warranty
           </span>
         )}
       </div>

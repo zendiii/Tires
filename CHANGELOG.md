@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-08-07
+
+### Added
+
+- **ATD tire supply via serverless functions.** `api/_lib/atd.ts` queries the
+  Tirewire Connections Center SOAP API (built against its published WSDL) and
+  `api/tires/search.ts` exposes `GET /api/tires/search?size=275/55R20`
+- **Server-side retail markup** (`api/_lib/pricing.ts`): a tiered ladder where
+  the markup percentage falls as dealer cost rises, with a minimum dollar margin
+  protecting cheap tires, charm rounding, an optional MAP floor, and an
+  `ATD_MARKUP_MULTIPLIER` env lever for sales. FET is passed through at cost and
+  never marked up. Money is handled in integer cents
+- `FEATURES.liveCatalog` switches `services/catalog.ts` between ATD and the
+  bundled sample JSON, independent of `FEATURES.ecommerce`
+- `tsconfig.api.json` so `tsc -b` type-checks the serverless code
+
+### Changed
+
+- `Tire.rating`, `reviewCount`, and `category` are now optional — ATD supplies
+  none of them. `TireCard` and `TireDetail` render only the specs that exist,
+  and gained speed rating and FET rows for live results
+- SPA rewrite in `vercel.json` now excludes `/api/*`, which would otherwise have
+  swallowed every serverless request
+
+### Security
+
+- Dealer cost (`BuyPrice`) and all markup logic stay in `api/` and never enter
+  the browser bundle — verified against the built output. The API returns retail
+  prices only, and stock is reported as in-stock/low/out rather than exact counts
+
 ## [0.6.0] - 2026-08-07
 
 ### Added

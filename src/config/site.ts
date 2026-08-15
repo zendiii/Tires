@@ -14,8 +14,19 @@
  * src/services/ — that single change re-enables Add to Cart, the cart, and
  * checkout across the whole site.
  */
-export const FEATURES: { ecommerce: boolean } = {
+export const FEATURES: { ecommerce: boolean; liveCatalog: boolean } = {
   ecommerce: false,
+
+  /**
+   * Source tires from ATD (via `/api/tires/search`) instead of the bundled
+   * sample JSON.
+   *
+   * Turn this on once `node scripts/atd-check.mjs` passes and the ATD env vars
+   * are set in Vercel. It's separate from `ecommerce` on purpose: you'll want
+   * to browse real inventory and sanity-check the pricing before you let
+   * anyone actually buy.
+   */
+  liveCatalog: false,
 }
 
 /**
