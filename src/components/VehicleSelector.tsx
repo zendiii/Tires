@@ -87,7 +87,7 @@ export default function VehicleSelector({ onComplete }: {
               className="group skew-brand border border-brand/60 px-4 py-1.5 transition-colors hover:bg-brand"
               title={`Change ${chip.label}`}
             >
-              <span className="skew-fix block font-display text-sm text-brand transition-colors group-hover:text-white">
+              <span className="skew-fix block font-display text-sm text-brand-ink transition-colors group-hover:text-white">
                 {chip.label} ✕
               </span>
             </button>
@@ -98,9 +98,9 @@ export default function VehicleSelector({ onComplete }: {
       <h2 className="mb-6 font-display text-3xl">{STEP_TITLES[step]}</h2>
 
       {loading ? (
-        <p className="animate-pulse text-neutral-500">Loading…</p>
+        <p className="animate-pulse text-ink-subtle">Loading…</p>
       ) : options.length === 0 ? (
-        <p className="text-neutral-400">
+        <p className="text-ink-muted">
           No matches in our fitment database yet — more vehicles are added regularly.
         </p>
       ) : (

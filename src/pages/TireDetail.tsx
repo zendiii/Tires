@@ -29,13 +29,13 @@ export default function TireDetail() {
   }, [id])
 
   if (tire === undefined) {
-    return <p className="animate-pulse px-6 py-24 text-center text-neutral-500">Loading…</p>
+    return <p className="animate-pulse px-6 py-24 text-center text-ink-subtle">Loading…</p>
   }
   if (tire === null) {
     return (
       <div className="px-6 py-24 text-center">
-        <p className="text-neutral-400">We couldn't find that tire.</p>
-        <Link to="/shop/size" className="mt-4 inline-block font-display text-brand hover:underline">
+        <p className="text-ink-muted">We couldn't find that tire.</p>
+        <Link to="/shop/size" className="mt-4 inline-block font-display text-brand-ink hover:underline">
           Browse tires →
         </Link>
       </div>
@@ -86,13 +86,13 @@ export default function TireDetail() {
         </div>
 
         <div>
-          <p className="font-display text-xs tracking-widest text-brand">{tire.brand}</p>
+          <p className="font-display text-xs tracking-widest text-brand-ink">{tire.brand}</p>
           <h1 className="mt-1 font-display text-5xl">{tire.model}</h1>
-          <p className="mt-2 font-mono text-neutral-400">{size}</p>
+          <p className="mt-2 font-mono text-ink-muted">{size}</p>
 
-          <p className={`mt-7 font-display text-5xl ${FEATURES.ecommerce ? '' : 'text-neutral-400'}`}>
+          <p className={`mt-7 font-display text-5xl ${FEATURES.ecommerce ? '' : 'text-ink-muted'}`}>
             {formatPrice(tire.price)}
-            <span className="ml-3 font-sans text-sm font-normal text-neutral-500">
+            <span className="ml-3 font-sans text-sm font-normal text-ink-subtle">
               {FEATURES.ecommerce ? 'per tire' : 'estimated, per tire'}
             </span>
           </p>
@@ -100,8 +100,8 @@ export default function TireDetail() {
           <dl className="mt-8 divide-y divide-edge border-y border-edge">
             {specs.map(([label, value]) => (
               <div key={label} className="flex justify-between py-3 text-sm">
-                <dt className="text-neutral-500">{label}</dt>
-                <dd className="font-medium text-white">{value}</dd>
+                <dt className="text-ink-subtle">{label}</dt>
+                <dd className="font-medium text-ink">{value}</dd>
               </div>
             ))}
           </dl>
@@ -109,12 +109,12 @@ export default function TireDetail() {
           {FEATURES.ecommerce ? (
             <>
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <label className="flex items-center gap-3 text-sm text-neutral-400">
+                <label className="flex items-center gap-3 text-sm text-ink-muted">
                   Quantity
                   <select
                     value={quantity}
                     onChange={(e) => setQuantity(Number(e.target.value))}
-                    className="border border-edge bg-surface-card px-4 py-2.5 text-white transition-colors focus:border-brand focus:outline-none"
+                    className="border border-edge bg-surface-card px-4 py-2.5 text-ink transition-colors focus:border-brand focus:outline-none"
                   >
                     {[1, 2, 3, 4, 5, 6].map((n) => (
                       <option key={n} value={n}>{n}</option>
@@ -126,15 +126,15 @@ export default function TireDetail() {
                   type="button"
                   disabled={!tire.inStock}
                   onClick={handleAdd}
-                  className="skew-brand bg-brand px-8 py-3.5 transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-surface-raised disabled:text-neutral-600"
+                  className="skew-brand bg-brand px-8 py-3.5 text-white transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:bg-surface-raised disabled:text-ink-faint"
                 >
-                  <span className="skew-fix block font-display text-white">
+                  <span className="skew-fix block font-display">
                     {added ? 'Added ✓' : `Add ${quantity} — ${formatPrice(tire.price * quantity)}`}
                   </span>
                 </button>
               </div>
 
-              <p className="mt-6 text-sm text-neutral-500">
+              <p className="mt-6 text-sm text-ink-subtle">
                 Ship to home, mobile installation, or in-shop — choose at checkout.
               </p>
             </>
@@ -143,7 +143,7 @@ export default function TireDetail() {
               <BookButton className="skew-brand inline-block bg-brand px-8 py-3.5 text-white transition-colors hover:bg-brand-hover">
                 Book an Install with This Tire
               </BookButton>
-              <p className="mt-4 text-sm text-neutral-500">
+              <p className="mt-4 text-sm text-ink-subtle">
                 Online ordering isn't live yet. Book an appointment and we'll
                 source this set and confirm real pricing before we come out.
               </p>

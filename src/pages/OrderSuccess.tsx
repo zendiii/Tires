@@ -63,7 +63,7 @@ export default function OrderSuccess() {
     return (
       <div className="px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Order not found</h1>
-        <p className="mx-auto mt-3 max-w-md text-neutral-400">
+        <p className="mx-auto mt-3 max-w-md text-ink-muted">
           If you were charged, your confirmation email has the details — or give
           us a call and we'll sort it out.
         </p>
@@ -91,7 +91,7 @@ export default function OrderSuccess() {
 
   if (!order) {
     return (
-      <div className="px-6 py-24 text-center text-neutral-400">
+      <div className="px-6 py-24 text-center text-ink-muted">
         Confirming your order…
       </div>
     )
@@ -103,7 +103,7 @@ export default function OrderSuccess() {
     return (
       <div className="px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Payment processing</h1>
-        <p className="mx-auto mt-3 max-w-md text-neutral-400">
+        <p className="mx-auto mt-3 max-w-md text-ink-muted">
           Your payment is still clearing. We'll email you the moment it lands and
           start on your order then.
         </p>
@@ -118,7 +118,7 @@ export default function OrderSuccess() {
         <h1 className="font-display text-4xl">You're set</h1>
       </div>
 
-      <p className="mt-4 text-neutral-400">
+      <p className="mt-4 text-ink-muted">
         Payment confirmed{order.email ? <> — receipt sent to {order.email}</> : null}.
       </p>
 
@@ -126,7 +126,7 @@ export default function OrderSuccess() {
         <dl className="space-y-2.5 text-sm">
           {order.items.map((item, i) => (
             <div key={i} className="flex justify-between gap-4">
-              <dt className="text-neutral-400">
+              <dt className="text-ink-muted">
                 {item.description}
                 {item.quantity && item.quantity > 1 ? ` × ${item.quantity}` : ''}
               </dt>
@@ -144,7 +144,7 @@ export default function OrderSuccess() {
       {order.fulfillment && NEXT_STEPS[order.fulfillment] && (
         <div className="mt-6 border-l-2 border-brand bg-surface-card p-5">
           <h2 className="font-display text-lg">What happens next</h2>
-          <p className="mt-2 text-sm text-neutral-400">
+          <p className="mt-2 text-sm text-ink-muted">
             {NEXT_STEPS[order.fulfillment]}
           </p>
         </div>

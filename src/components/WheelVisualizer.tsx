@@ -62,8 +62,8 @@ function Wheel({ size, label }: { size: string; label: string }) {
         </text>
       </svg>
       <figcaption className="text-center">
-        <p className="font-display text-xs tracking-widest text-brand">{label}</p>
-        <p className="font-mono text-sm text-white">{size}</p>
+        <p className="font-display text-xs tracking-widest text-brand-ink">{label}</p>
+        <p className="font-mono text-sm text-ink">{size}</p>
       </figcaption>
     </figure>
   )

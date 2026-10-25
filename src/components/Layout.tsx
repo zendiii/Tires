@@ -12,6 +12,7 @@ import { FEATURES, SITE } from '../config/site'
 import { InstagramIcon, PhoneIcon } from './icons'
 import BookButton from './BookButton'
 import Logo from './Logo'
+import ThemeToggle from './ThemeToggle'
 
 /** React Router keeps scroll position between pages; reset it on navigation. */
 function ScrollToTop() {
@@ -30,17 +31,17 @@ function ScrollToTop() {
 
 const navLinkClass = ({ isActive }: { isActive: boolean }) =>
   `font-display text-sm transition-colors ${
-    isActive ? 'text-brand' : 'text-neutral-400 hover:text-white'
+    isActive ? 'text-brand-ink' : 'text-ink-muted hover:text-ink'
   }`
 
 export default function Layout() {
   const { count } = useCart()
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface-dark text-white">
+    <div className="flex min-h-screen flex-col bg-surface text-ink">
       <ScrollToTop />
 
-      <header className="sticky top-0 z-50 border-b border-edge bg-surface-dark/85 backdrop-blur">
+      <header className="sticky top-0 z-50 border-b border-edge bg-surface/85 backdrop-blur">
         <div className="mx-auto flex h-20 max-w-6xl items-center justify-between gap-4 px-6">
           <Link to="/" aria-label="Dino's Mobile Tires — home">
             <Logo className="h-8 w-auto sm:h-9" />
@@ -68,6 +69,8 @@ export default function Layout() {
               </NavLink>
             )}
 
+            <ThemeToggle className="hidden md:inline-block" />
+
             <BookButton className="skew-brand bg-brand px-5 py-2.5 text-sm text-white transition-colors hover:bg-brand-hover">
               Book Now
             </BookButton>
@@ -83,7 +86,7 @@ export default function Layout() {
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-5 px-6 text-center">
           <Logo className="h-7 w-auto opacity-60" />
 
-          <p className="font-display text-xs tracking-wide text-neutral-500">
+          <p className="font-display text-xs tracking-wide text-ink-subtle">
             Mobile Installation · In-Shop Installation · Flat Repair
           </p>
 
@@ -92,7 +95,7 @@ export default function Layout() {
               href={SITE.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 text-neutral-500 transition-colors hover:text-brand"
+              className="flex items-center gap-2 text-ink-subtle transition-colors hover:text-brand-ink"
               aria-label="Follow Dino's Mobile Tires on Instagram"
             >
               <InstagramIcon className="h-5 w-5" />
@@ -102,22 +105,25 @@ export default function Layout() {
             {SITE.phone && (
               <a
                 href={`tel:${SITE.phone}`}
-                className="flex items-center gap-2 text-neutral-500 transition-colors hover:text-brand"
+                className="flex items-center gap-2 text-ink-subtle transition-colors hover:text-brand-ink"
                 aria-label={`Call Dino's Mobile Tires at ${SITE.phoneDisplay}`}
               >
                 <PhoneIcon className="h-5 w-5" />
                 <span className="font-display text-xs">{SITE.phoneDisplay}</span>
               </a>
             )}
+
+            {/* Phones only — wider screens have it in the header. */}
+            <ThemeToggle labelled className="flex md:hidden" />
           </div>
 
-          <p className="text-xs text-neutral-600">
+          <p className="text-xs text-ink-faint">
             © {new Date().getFullYear()} Dino's Mobile Tires — built by{' '}
             <a
               href={SITE.builderUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-neutral-400 underline underline-offset-2 transition-colors hover:text-brand"
+              className="font-display text-ink-muted underline underline-offset-2 transition-colors hover:text-brand-ink"
             >
               {SITE.builderName}
             </a>{' '}

@@ -27,7 +27,7 @@ function BookingPanel() {
     return (
       <div className="border border-edge bg-surface-card p-8 text-center">
         <h2 className="font-display text-2xl">Booking is being connected</h2>
-        <p className="mx-auto mt-3 max-w-md text-sm text-neutral-400">
+        <p className="mx-auto mt-3 max-w-md text-sm text-ink-muted">
           Online scheduling is coming online shortly. In the meantime, reach out
           and we'll get you on the calendar.
         </p>
@@ -54,20 +54,20 @@ function BookingPanel() {
 
   return (
     <div className="border border-edge bg-surface-card p-10 text-center">
-      <p className="mx-auto mb-7 max-w-sm text-neutral-400">
+      <p className="mx-auto mb-7 max-w-sm text-ink-muted">
         Pick a time that works and tell us where to meet you — it takes about a
         minute.
       </p>
       <BookButton className="skew-brand inline-block bg-brand px-10 py-4 text-lg text-white transition-colors hover:bg-brand-hover">
         Book Online
       </BookButton>
-      <p className="mt-5 text-xs text-neutral-600">
+      <p className="mt-5 text-xs text-ink-faint">
         Trouble with the booking window?{' '}
         <a
           href={BOOKING_DIRECT_URL}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-neutral-400 underline hover:text-brand"
+          className="text-ink-muted underline hover:text-brand-ink"
         >
           Open it in a new tab
         </a>
@@ -80,11 +80,11 @@ export default function Book() {
   return (
     <div className="mx-auto max-w-5xl px-6 py-16">
       <header className="text-center">
-        <p className="font-display text-xs tracking-widest text-brand">Schedule Service</p>
+        <p className="font-display text-xs tracking-widest text-brand-ink">Schedule Service</p>
         <h1 className="mt-2 font-display text-5xl sm:text-6xl">
-          Book your <span className="text-brand">install</span>
+          Book your <span className="text-brand-ink">install</span>
         </h1>
-        <p className="mx-auto mt-5 max-w-lg text-neutral-400">
+        <p className="mx-auto mt-5 max-w-lg text-ink-muted">
           Mobile installation at your home or office —
           pick a time and we'll take it from there.
         </p>
@@ -102,9 +102,9 @@ export default function Book() {
         <ol className="grid gap-8 sm:grid-cols-3">
           {STEPS.map(([title, body], i) => (
             <li key={title}>
-              <span className="font-display text-4xl text-brand">0{i + 1}</span>
+              <span className="font-display text-4xl text-brand-ink">0{i + 1}</span>
               <h3 className="mt-2 font-display text-lg">{title}</h3>
-              <p className="mt-1.5 text-sm text-neutral-400">{body}</p>
+              <p className="mt-1.5 text-sm text-ink-muted">{body}</p>
             </li>
           ))}
         </ol>
@@ -119,15 +119,15 @@ export default function Book() {
           {SERVICES.map(([title, body]) => (
             <div key={title} className="border border-edge bg-surface-card p-6">
               <h3 className="font-display text-lg">{title}</h3>
-              <p className="mt-1.5 text-sm text-neutral-400">{body}</p>
+              <p className="mt-1.5 text-sm text-ink-muted">{body}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <p className="mt-16 text-center text-sm text-neutral-500">
+      <p className="mt-16 text-center text-sm text-ink-subtle">
         Already know what you need?{' '}
-        <Link to="/shop/vehicle" className="font-display text-brand hover:underline">
+        <Link to="/shop/vehicle" className="font-display text-brand-ink hover:underline">
           Browse tires for your vehicle
         </Link>
       </p>

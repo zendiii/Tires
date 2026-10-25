@@ -14,7 +14,7 @@ import PreviewBanner from '../components/PreviewBanner'
 type SortOrder = 'rating' | 'price-asc' | 'price-desc'
 
 const SELECT_CLASS =
-  'border border-edge bg-surface-card px-4 py-2.5 text-sm text-white transition-colors focus:border-brand focus:outline-none'
+  'border border-edge bg-surface-card px-4 py-2.5 text-sm text-ink transition-colors focus:border-brand focus:outline-none'
 
 export default function ShopBySize() {
   // The selected size lives in the URL (?size=275/55R20) so results are
@@ -68,7 +68,7 @@ export default function ShopBySize() {
     <div className="mx-auto max-w-6xl px-6 py-16">
       <PreviewBanner />
       <h1 className="font-display text-4xl">Shop by Size</h1>
-      <p className="mt-3 max-w-md text-sm text-neutral-400">
+      <p className="mt-3 max-w-md text-sm text-ink-muted">
         Your size is printed on the sidewall — width / aspect ratio R wheel
         diameter, like 275/55R20.
       </p>
@@ -136,11 +136,11 @@ export default function ShopBySize() {
 
       <div className="mt-12">
         {!size ? (
-          <p className="text-neutral-500">Pick a size above to see available tires.</p>
+          <p className="text-ink-subtle">Pick a size above to see available tires.</p>
         ) : sorted === null ? (
-          <p className="animate-pulse text-neutral-500">Finding tires…</p>
+          <p className="animate-pulse text-ink-subtle">Finding tires…</p>
         ) : sorted.length === 0 ? (
-          <p className="text-neutral-400">No tires match those filters — try removing one.</p>
+          <p className="text-ink-muted">No tires match those filters — try removing one.</p>
         ) : (
           <>
             <div className="mb-6 flex items-center gap-3">

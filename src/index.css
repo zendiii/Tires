@@ -12,23 +12,23 @@
  * The logo uses only these three colors, so the site does too. Neutrals are
  * warmed slightly toward the red so grays never read as cold/blue.
  *
+ * There are two themes, dark (the original) and light, selected by a
+ * `data-theme` attribute — see "Themes" below. Components never name a raw
+ * color for text or surfaces; they use the semantic tokens (bg-surface,
+ * text-ink, border-edge…) so the same markup works in both.
+ *
  * Tailwind v4 generates utilities from these tokens (bg-brand, font-display,
  * etc.) — there is no tailwind.config.js.
  */
 @theme {
-  /* Brand — sampled directly from the logo artwork */
+  /*
+   * Brand — sampled directly from the logo artwork. Identical in both themes:
+   * a red fill or border is always exactly the logo's red. (Red TEXT is the
+   * one exception — see --brand-ink below.)
+   */
   --color-brand: #e24233;
   --color-brand-hover: #c9332a;
   --color-brand-dim: #7d241d;
-
-  /* Surfaces — near-black, matching the logo's #010101 wordmark */
-  --color-surface-dark: #0b0a0a;
-  --color-surface-card: #151313;
-  --color-surface-raised: #201d1d;
-  --color-surface-light: #f4f2f2;
-
-  /* Hairlines */
-  --color-edge: #2a2626;
 
   /*
    * Type. The logo is set in Zuume Bold — a commercial condensed grotesque we
@@ -40,10 +40,142 @@
   --font-sans: "Inter Variable", system-ui, sans-serif;
 }
 
+/*
+ * Themes.
+ *
+ * Every themed token points at a plain CSS variable (--surface, --ink, …) whose
+ * value comes from the nearest ancestor with a `data-theme` attribute. The
+ * attribute normally sits on <html> (set before first paint by the script in
+ * index.html, changed by src/services/theme.ts), but any element can carry one
+ * to re-theme just its subtree — the landing hero is always `data-theme="dark"`
+ * because its white type sits on photography.
+ *
+ * Why `@theme inline`: without it, Tailwind declares
+ * `--color-surface: var(--surface)` once on :root, the browser resolves it
+ * THERE, and every element inherits that already-resolved root value — so a
+ * dark section inside a light page would silently stay light. `inline` makes
+ * each utility read var(--surface) directly on the element it styles.
+ */
+@theme inline {
+  --color-surface: var(--surface); /* page background */
+  --color-surface-card: var(--surface-card); /* cards, panels, inputs */
+  --color-surface-raised: var(--surface-raised); /* muted fills: disabled buttons, empty rails */
+  --color-edge: var(--edge); /* hairline borders */
+  --color-edge-strong: var(--edge-strong); /* hover borders */
+
+  /* Text, strongest to faintest */
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-subtle: var(--ink-subtle);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-brand-ink: var(--brand-ink); /* brand red, for TEXT */
+  --color-ok: var(--ok); /* "In stock" */
+  --color-shade: var(--shade); /* drop-shadow color */
+}
+
+/*
+ * Dark — the original look. Text values are exactly the Tailwind neutrals the
+ * components used before theming existed (noted per line).
+ *
+ * The `:root:not(...)` arm makes dark the fallback when no attribute is set.
+ */
+:root:not([data-theme="light"]),
+[data-theme="dark"] {
+  color-scheme: dark; /* native scrollbars, <select> menus, autofill */
+
+  --surface: #0b0a0a; /* the logo's #010101 wordmark, warmed */
+  --surface-card: #151313;
+  --surface-raised: #201d1d;
+  --edge: #2a2626;
+  --edge-strong: oklch(43.9% 0 0); /* neutral-600 */
+
+  --ink: #ffffff;
+  --ink-soft: oklch(87% 0 0); /* neutral-300 */
+  --ink-muted: oklch(70.8% 0 0); /* neutral-400 */
+  --ink-subtle: oklch(55.6% 0 0); /* neutral-500 */
+  --ink-faint: oklch(43.9% 0 0); /* neutral-600 */
+
+  --brand-ink: #e24233;
+  --ok: oklch(76.5% 0.177 163.223); /* emerald-400 */
+  --shade: rgb(0 0 0 / 0.6);
+
+  --show-in-dark: inline;
+  --show-in-light: none;
+}
+
+/*
+ * Light. A soft warm gray rather than white: pure white made the always-dark
+ * hero photography look heavy by comparison, and gray narrows that jump.
+ * Cards sit one step lighter than the page so they still lift off it.
+ *
+ * Each text tier keeps the same order and roughly the contrast of its dark
+ * counterpart, so the hierarchy reads the same in both themes:
+ *   ink 15.1:1 · soft 9.6:1 · muted 6.8:1 · subtle 5.3:1 · faint 3.5:1 (on --surface)
+ *
+ * --brand-ink is deeper than the logo red on purpose. #e24233 on this
+ * background is only 3.3:1 — below the 4.5:1 that WCAG AA requires for small
+ * text — while #b0301f is 5.1:1. Fills and borders keep the true logo red.
+ */
+[data-theme="light"] {
+  color-scheme: light;
+
+  --surface: #e8e5e3; /* warm light gray — also the toolbar color in index.html */
+  --surface-card: #f3f1ef;
+  --surface-raised: #dcd7d5;
+  --edge: #d6cfcd;
+  --edge-strong: #9b9291;
+
+  --ink: #121010;
+  --ink-soft: #3b3534;
+  --ink-muted: #524b4a;
+  --ink-subtle: #635b5a;
+  --ink-faint: #7f7776;
+
+  --brand-ink: #b0301f;
+  --ok: #036649; /* deep emerald — emerald-400 is unreadable on a light page */
+  --shade: rgb(60 30 26 / 0.2); /* a black/60 shadow looks like a smudge here */
+
+  --show-in-dark: none;
+  --show-in-light: inline;
+}
+
+/*
+ * `page-light:` — style by the PAGE's theme, even from inside a nested
+ * `data-theme` scope. Ordinary tokens follow the nearest scope, which is
+ * usually what you want; this is for the rare element inside the always-dark
+ * hero that has to react to the light page around it.
+ */
+@custom-variant page-light (:root[data-theme="light"] &);
+
+/*
+ * Swap content per theme — <Logo> renders both artworks and lets this pick.
+ * Driven by the same variables as the colors, so it follows nested scopes
+ * too: the hero's `data-theme="dark"` gets the white-wordmark logo even on a
+ * light page. Sets `display`, so don't combine with block/flex utilities.
+ */
+@utility show-in-dark {
+  display: var(--show-in-dark);
+}
+
+@utility show-in-light {
+  display: var(--show-in-light);
+}
+
 @layer base {
+  /*
+   * Text color is inherited as a resolved value, not as a variable — so a
+   * nested theme scope must set it again, or its text keeps the parent
+   * theme's color.
+   */
+  [data-theme] {
+    color: var(--ink);
+  }
+
   body {
     font-family: var(--font-sans);
-    background-color: var(--color-surface-dark);
+    background-color: var(--surface);
     -webkit-font-smoothing: antialiased;
   }
 
@@ -82,6 +214,16 @@
   clip-path: polygon(57.6% 0, 100% 0, 100% 61.8%, 50.5% 100%, 0 100%, 0 39.3%);
 }
 
+/*
+ * The same shape with shallow corner cuts, for narrow screens. There the hero
+ * content spans almost the full width, and the full cut slices through it —
+ * which only shows on the light theme, where text outside the cut lands on a
+ * light page instead of a dark one.
+ */
+@utility clip-speed-narrow {
+  clip-path: polygon(40% 0, 100% 0, 100% 90%, 60% 100%, 0 100%, 0 10%);
+}
+
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -99,9 +241,9 @@
  * Deliberately has NO animation-delay and NO fill-mode. `fill-mode: both`
  * pins an element to the keyframe's opening frame (opacity: 0) until its
  * animation runs — so anything that stops the animation from starting leaves
- * the content permanently invisible, which on our near-black page looks like
- * a blank screen. Without fill-mode the element's resting state is visible,
- * so a missed animation costs a fade, never the content.
+ * the content permanently invisible, which looks like a blank screen (black
+ * or white, depending on the theme). Without fill-mode the element's resting
+ * state is visible, so a missed animation costs a fade, never the content.
  */
 @utility animate-enter {
   animation: fade-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);

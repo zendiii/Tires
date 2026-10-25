@@ -28,9 +28,9 @@ export default class ErrorBoundary extends Component<Props, State> {
     if (!error) return this.props.children
 
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-surface-dark px-6 text-center text-white">
+      <div className="flex min-h-screen flex-col items-center justify-center gap-6 bg-surface px-6 text-center text-ink">
         <h1 className="font-display text-4xl">Something went wrong</h1>
-        <p className="max-w-md text-neutral-400">
+        <p className="max-w-md text-ink-muted">
           Sorry — this page hit an error. Reloading usually clears it. If it
           keeps happening, give us a call and we'll get you booked.
         </p>
@@ -41,7 +41,7 @@ export default class ErrorBoundary extends Component<Props, State> {
         >
           <span className="skew-fix block font-display text-white">Reload the page</span>
         </button>
-        <p className="max-w-lg font-mono text-xs break-words text-neutral-600">{error.message}</p>
+        <p className="max-w-lg font-mono text-xs break-words text-ink-faint">{error.message}</p>
       </div>
     )
   }

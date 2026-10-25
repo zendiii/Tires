@@ -35,8 +35,15 @@ const SHOP_PATHS = [
 export default function Home() {
   return (
     <div className="flex flex-col items-center px-6 py-12 sm:py-16">
-      {/* Primary: booking. Real job photos rotate behind the headline. */}
-      <header className="relative w-full max-w-5xl">
+      {/*
+        Primary: booking. Real job photos rotate behind the headline.
+
+        Always dark, even on the light theme: the white headline needs the
+        photos' dark scrim to stay legible, and a light scrim would wash out
+        the photography. `data-theme` re-themes just this subtree — tokens,
+        text color, and the logo artwork all follow it.
+      */}
+      <header data-theme="dark" className="relative w-full max-w-5xl">
         <HeroPhotos />
 
         <div className="relative flex flex-col items-center px-4 py-16 text-center sm:px-10 sm:py-24">
@@ -44,9 +51,9 @@ export default function Home() {
           <h1 className="mt-10 max-w-3xl animate-enter font-display text-5xl drop-shadow-lg sm:text-7xl">
             Tires installed
             <br />
-            <span className="text-brand">wherever you are.</span>
+            <span className="text-brand-ink">wherever you are.</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-md animate-enter text-neutral-300 drop-shadow">
+          <p className="mx-auto mt-6 max-w-md animate-enter text-ink-soft drop-shadow">
             Mobile tire service that comes to your driveway — Pick a time and we'll handle the rest.
           </p>
 
@@ -56,7 +63,7 @@ export default function Home() {
 
           <Link
             to="/book"
-            className="mt-6 animate-enter font-display text-sm text-neutral-300 transition-colors hover:text-brand"
+            className="mt-6 animate-enter font-display text-sm text-ink-soft transition-colors hover:text-brand-ink"
           >
             See how mobile installation works →
           </Link>
@@ -66,8 +73,8 @@ export default function Home() {
       <div className="mt-20 grid max-w-3xl animate-enter gap-10 text-center sm:grid-cols-3">
         {PROMISES.map(([title, body]) => (
           <div key={title}>
-            <h2 className="font-display text-base text-white">{title}</h2>
-            <p className="mt-1.5 text-sm text-neutral-500">{body}</p>
+            <h2 className="font-display text-base text-ink">{title}</h2>
+            <p className="mt-1.5 text-sm text-ink-subtle">{body}</p>
           </div>
         ))}
       </div>
@@ -75,10 +82,10 @@ export default function Home() {
       {/* Secondary: tire shopping, gated until pricing/inventory APIs land */}
       <section className="mt-24 w-full max-w-3xl border-t border-edge pt-14">
         <div className="mb-8 flex flex-wrap items-center justify-center gap-3">
-          <h2 className="font-display text-2xl text-neutral-300">Shop Tires</h2>
+          <h2 className="font-display text-2xl text-ink-soft">Shop Tires</h2>
           {!FEATURES.ecommerce && (
-            <span className="skew-brand border border-neutral-700 px-3 py-1">
-              <span className="skew-fix block font-display text-xs text-neutral-400">
+            <span className="skew-brand border border-edge-strong px-3 py-1">
+              <span className="skew-fix block font-display text-xs text-ink-muted">
                 Coming Soon
               </span>
             </span>
@@ -86,7 +93,7 @@ export default function Home() {
         </div>
 
         {!FEATURES.ecommerce && (
-          <p className="mx-auto mb-8 max-w-md text-center text-sm text-neutral-500">
+          <p className="mx-auto mb-8 max-w-md text-center text-sm text-ink-subtle">
             Online ordering opens once our live inventory feed is connected.
             Browse the catalog now to see what fits — then book an install and
             we'll source your set.
@@ -101,20 +108,20 @@ export default function Home() {
               className={`group relative overflow-hidden border p-7 transition-all duration-300 hover:-translate-y-0.5 ${
                 FEATURES.ecommerce
                   ? 'border-edge bg-surface-card hover:border-brand'
-                  : 'border-edge/60 bg-surface-card/40 hover:border-neutral-600'
+                  : 'border-edge/60 bg-surface-card/40 hover:border-edge-strong'
               }`}
             >
               <h3
                 className={`font-display text-xl transition-colors ${
                   FEATURES.ecommerce
-                    ? 'group-hover:text-brand'
-                    : 'text-neutral-400 group-hover:text-neutral-200'
+                    ? 'group-hover:text-brand-ink'
+                    : 'text-ink-muted group-hover:text-ink-soft'
                 }`}
               >
                 {path.title}
               </h3>
-              <p className="mt-2 text-sm text-neutral-500">{path.body}</p>
-              <p className="mt-6 font-display text-sm text-neutral-500">
+              <p className="mt-2 text-sm text-ink-subtle">{path.body}</p>
+              <p className="mt-6 font-display text-sm text-ink-subtle">
                 {FEATURES.ecommerce ? 'Start →' : 'Preview →'}
               </p>
             </Link>

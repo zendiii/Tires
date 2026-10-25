@@ -3,11 +3,15 @@
  *
  * The panel is clipped to `clip-speed` — the raked hexagon taken from the
  * "DINO'S" badge — so the photography reads as part of the brand mark rather
- * than a rectangle behind text.
+ * than a rectangle behind text. Light-theme phones get the shallower
+ * `clip-speed-narrow`, so the cut never slices through the white type.
  *
  * Photos crossfade rather than slide: the headline sits directly on top, and
  * horizontal movement under live text is hard to read past. A scrim keeps the
  * white display type legible over bright Florida daylight shots.
+ *
+ * Rendered inside the hero's `data-theme="dark"` scope, so `surface` here is
+ * always near-black — on the light theme too.
  */
 import { useEffect, useState } from 'react'
 import { HERO_PHOTOS } from '../data/photos'
@@ -43,7 +47,7 @@ export default function HeroPhotos() {
 
   return (
     <div
-      className="clip-speed absolute inset-0 overflow-hidden bg-surface-card"
+      className="clip-speed absolute inset-0 overflow-hidden bg-surface-card page-light:max-md:clip-speed-narrow"
       // Decorative: the headline in front already carries the message.
       aria-hidden="true"
     >
@@ -72,9 +76,14 @@ export default function HeroPhotos() {
        * Usable range is roughly /45 to /75; below about /45 the white headline
        * starts losing contrast against the bright daylight shots.
        */}
-      <div className="absolute inset-0 bg-surface-dark/55" />
-      {/* ...plus edges fading to the page colour so the panel sits in the page. */}
-      <div className="absolute inset-0 bg-gradient-to-b from-surface-dark via-transparent to-surface-dark" />
+      <div className="absolute inset-0 bg-surface/1" />
+      {/*
+       * ...plus edges fading to the dark page colour, so on the dark theme the
+       * panel dissolves into the page. Dropped on the light theme: there the
+       * fade only adds black bands that made the photos look heavy next to the
+       * light page, and the clipped badge shape already gives a clean edge.
+       */}
+      <div className="absolute inset-0 bg-gradient-to-b from-surface via-transparent to-surface page-light:hidden" />
     </div>
   )
 }

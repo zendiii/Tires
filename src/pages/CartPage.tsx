@@ -49,7 +49,7 @@ export default function CartPage() {
     return (
       <div className="px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Online ordering is coming soon</h1>
-        <p className="mx-auto mt-3 max-w-md text-neutral-400">
+        <p className="mx-auto mt-3 max-w-md text-ink-muted">
           We're connecting our live inventory feed. Until then, book an
           installation and we'll source your set and confirm pricing.
         </p>
@@ -72,7 +72,7 @@ export default function CartPage() {
     return (
       <div className="px-6 py-24 text-center">
         <h1 className="font-display text-4xl">Your cart is empty</h1>
-        <p className="mt-3 text-neutral-400">Let's find the right set for you.</p>
+        <p className="mt-3 text-ink-muted">Let's find the right set for you.</p>
         <div className="mt-10 flex justify-center gap-4">
           <Link to="/shop/vehicle" className="skew-brand bg-brand px-7 py-3 hover:bg-brand-hover">
             <span className="skew-fix block font-display text-sm text-white">Shop by Vehicle</span>
@@ -134,12 +134,12 @@ export default function CartPage() {
                   <p className="truncate font-display text-lg">
                     {tire ? `${tire.brand} ${tire.model}` : 'Loading…'}
                   </p>
-                  <p className="font-mono text-sm text-neutral-500">{item.size}</p>
+                  <p className="font-mono text-sm text-ink-subtle">{item.size}</p>
                 </div>
                 <select
                   value={item.quantity}
                   onChange={(e) => updateQuantity(item.tireId, item.size, Number(e.target.value))}
-                  className="border border-edge bg-surface-dark px-3 py-2 text-sm transition-colors focus:border-brand focus:outline-none"
+                  className="border border-edge bg-surface px-3 py-2 text-sm transition-colors focus:border-brand focus:outline-none"
                   aria-label="Quantity"
                 >
                   {[1, 2, 3, 4, 5, 6].map((n) => (
@@ -152,7 +152,7 @@ export default function CartPage() {
                 <button
                   type="button"
                   onClick={() => removeItem(item.tireId, item.size)}
-                  className="text-neutral-600 transition-colors hover:text-brand"
+                  className="text-ink-faint transition-colors hover:text-brand-ink"
                   aria-label="Remove from cart"
                 >
                   ✕
@@ -176,7 +176,7 @@ export default function CartPage() {
                   className={`block cursor-pointer border p-4 transition-colors ${
                     fulfillment === o.id
                       ? 'border-brand bg-brand/10'
-                      : 'border-edge hover:border-neutral-600'
+                      : 'border-edge hover:border-edge-strong'
                   }`}
                 >
                   <input
@@ -189,11 +189,11 @@ export default function CartPage() {
                   />
                   <span className="flex items-center justify-between font-display">
                     {o.label}
-                    <span className="text-sm text-brand">
+                    <span className="text-sm text-brand-ink">
                       {o.feePerTire === 0 ? 'Free' : `+${formatPrice(o.feePerTire)}/tire`}
                     </span>
                   </span>
-                  <span className="mt-1 block text-sm text-neutral-400">{o.description}</span>
+                  <span className="mt-1 block text-sm text-ink-muted">{o.description}</span>
                 </label>
               ))}
             </div>
@@ -201,11 +201,11 @@ export default function CartPage() {
 
           <dl className="space-y-2.5 border-t border-edge pt-5 text-sm">
             <div className="flex justify-between">
-              <dt className="text-neutral-400">Subtotal ({count} tires)</dt>
+              <dt className="text-ink-muted">Subtotal ({count} tires)</dt>
               <dd>{formatPrice(subtotal)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-neutral-400">{option.label}</dt>
+              <dt className="text-ink-muted">{option.label}</dt>
               <dd>{fulfillmentFee === 0 ? 'Free' : formatPrice(fulfillmentFee)}</dd>
             </div>
             <div className="flex items-center justify-between border-t border-edge pt-3">
@@ -219,20 +219,20 @@ export default function CartPage() {
               type="button"
               onClick={handleCheckout}
               disabled={checkingOut}
-              className="skew-brand w-full bg-brand py-3.5 transition-colors hover:bg-brand-hover disabled:cursor-wait disabled:bg-surface-raised"
+              className="skew-brand w-full bg-brand py-3.5 text-white transition-colors hover:bg-brand-hover disabled:cursor-wait disabled:bg-surface-raised disabled:text-ink-muted"
             >
-              <span className="skew-fix block font-display text-white">
+              <span className="skew-fix block font-display">
                 {checkingOut ? 'Redirecting…' : 'Checkout'}
               </span>
             </button>
 
             {checkoutError && (
-              <p role="alert" className="mt-3 border-l-2 border-brand pl-3 text-sm text-neutral-300">
+              <p role="alert" className="mt-3 border-l-2 border-brand pl-3 text-sm text-ink-soft">
                 {checkoutError}
               </p>
             )}
 
-            <p className="mt-3 text-center text-xs text-neutral-600">
+            <p className="mt-3 text-center text-xs text-ink-faint">
               Secure payment handled by Stripe. Sales tax and any federal excise
               tax are calculated at checkout.
             </p>

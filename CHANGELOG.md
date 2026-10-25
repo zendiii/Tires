@@ -9,6 +9,32 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Light theme.** A sun/moon toggle in the header switches the whole site
+  between dark (the original look) and a new light theme — a soft warm gray
+  rather than pure white, so the always-dark hero photography doesn't look
+  heavy against it. First visits follow the OS setting; a choice is remembered, and choosing the OS's own theme
+  clears the override again. An inline script in `index.html` applies the
+  theme before first paint, so light-mode visitors never see a dark flash
+- Semantic color tokens in `src/index.css` — `surface`, `surface-card`,
+  `surface-raised`, `edge`, `edge-strong`, `ink` through `ink-faint`,
+  `brand-ink`, `ok`, `shade` — replacing hardcoded `text-white`,
+  `text-neutral-*`, and `surface-dark` across every component. Dark values are
+  unchanged. The light tiers keep the same order, and every tier above
+  `ink-faint` passes WCAG AA (4.5:1) on the page, cards, and raised fills. Any element can carry `data-theme` to re-theme just its subtree
+- `text-brand-ink` for red text. The logo red is 3.3:1 on the light
+  background, under WCAG AA's 4.5:1 for small text, so light mode uses
+  `#b0301f` (5.1:1) for text while fills and borders keep the true logo red
+- Light-background logo artwork (`logo-*-on-light.png`), cropped from the
+  "Full" originals with the same bounds as the existing "OverBlack" crops so
+  the two swap without layout shift. `<Logo>` renders both and CSS shows the
+  one matching the surrounding theme
+- The landing hero stays dark in both themes: its white headline depends on
+  the photos' dark scrim, which a light scrim would wash out. On the light
+  theme it drops the edge fade to black (there to blend into the dark page),
+  which otherwise made the photos look heavy against the light page. The
+  `page-light:` variant lets an element inside a dark scope react to the
+  page's theme like this
+
 - **Stripe Checkout.** `POST /api/checkout/session` opens a hosted Stripe
   Checkout Session and the browser is redirected to it; `GET` on the same route
   reads a finished session back for the confirmation page at `/order/success`.
@@ -46,6 +72,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Disabled Add to Cart and Checkout buttons ignored their `disabled:` text
+  color: the label `<span>` hardcoded `text-white`, which overrode the
+  button's own color. On dark this showed white-on-gray; on the light theme it
+  would have been white-on-near-white. The color now sits on the button and
+  the label inherits it
 - **Serverless functions hung forever under `vercel dev`.** They were written
   as `export default async function handler(request: Request)`, but
   `@vercel/node` only treats a function as a Web handler when the module

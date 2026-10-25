@@ -31,3 +31,36 @@ export function PhoneIcon({ className = '' }: { className?: string }) {
     </svg>
   )
 }
+
+/** Sun, 24×24 viewBox. Square-ended rays, to match the brand's hard corners. */
+export function SunIcon({ className = '' }: { className?: string }) {
+  const rays = 'M11 1h2v3.5h-2zM11 19.5h2V23h-2zM1 11h3.5v2H1zM19.5 11H23v2h-3.5z'
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="12" cy="12" r="4.75" />
+      <path d={rays} />
+      <path d={rays} transform="rotate(45 12 12)" />
+    </svg>
+  )
+}
+
+/** Crescent moon, 24×24 viewBox. */
+export function MoonIcon({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
+    </svg>
+  )
+}

@@ -11,6 +11,9 @@ Product vision lives in goal.md — read it before feature work.
 - Logo is used as cropped PNG, not the source SVG: the SVGs set the wordmark as live text in Zuume Bold (a licensed font visitors lack), so SVG would render it in a wrong fallback face
 - Display type is Anton (free stand-in for the logo's Zuume Bold); body is Inter. Both self-hosted via @fontsource — no external font CDN
 - Angular `skew-brand`/`skew-fix` utilities echo the logo's raked badge; square corners, never rounded
+- Two themes (dark + light) via `data-theme` on `<html>`. Use the semantic tokens from src/index.css — `bg-surface`/`-card`/`-raised`, `border-edge`/`-strong`, `text-ink`/`-soft`/`-muted`/`-subtle`/`-faint` — never `text-white`, `text-neutral-*`, or hex for text and surfaces. `text-white` is only for labels on a `bg-brand` fill
+- Red text is `text-brand-ink`, not `text-brand`: logo red fails WCAG AA as small text on the light background. `bg-brand`/`border-brand` stay the true logo red
+- The landing hero is always dark (`data-theme="dark"` on its wrapper) — any element can carry the attribute to re-theme its subtree
 - Never use `animation-fill-mode: both`/`backwards` for entrance animations — it holds elements at `opacity: 0` before the animation runs, and on our near-black page that reads as a blank screen. Use the `animate-enter` utility (no fill-mode, no delay).
 - Always give `useEffect` a block body. A concise arrow (`useEffect(() => doThing(), deps)`) returns that call's value, which React then calls as the cleanup function — this crashed the whole app on Windows once already (see CHANGELOG 0.5.2).
 - Progressive disclosure over dense filter pages — guide the customer step by step
@@ -21,15 +24,15 @@ Product vision lives in goal.md — read it before feature work.
 - Tire size format: 275/55R20 = width(mm)/aspect-ratio R wheel-diameter(in)
 - "Staggered setup" = different tire sizes front vs rear (Corvette, BMW M, etc.) — UI must handle both axles
 - Fulfillment is three-way: ship to home, mobile installation, in-shop installation
-
-## Current Phase
-
-- Scheduling is the primary conversion path; tire e-commerce is gated behind `FEATURES.ecommerce` in src/config/site.ts until live inventory/pricing APIs exist. Shop pages stay browsable but show a preview banner and disabled Add to Cart.
-- Booking runs on Housecall Pro's widget script (src/services/booking.ts), triggered by `BookButton`. Never hand-roll an `<iframe>` of the booking URL — their app stays blank until it gets an `hcp:open` postMessage that only their script sends. Token/orgName are account-specific (Marketing → Online Booking); never invent them.
+c/services/booking.ts), triggered by `BookButton`. Never hand-roll an `<iframe>` of the booking URL — their app stays blank until it gets an `hcp:open` postMessage that only their script sends. Token/orgName are account-specific (Marketing → Online Booking); never invent them.
 
 - Tire supply is ATD via the Tirewire Connections Center SOAP API (AccessKey + GroupToken + ConnectionID). Details and consequences in ARCHITECTURE.md; probe access with `node scripts/atd-check.mjs`.
 - Supplier credentials are server-only: they live in Vercel env vars and are used by `/api/*` serverless functions. Never prefix them `VITE_` — Vite inlines those into the public bundle.
 - Retail markup lives in `api/_lib/pricing.ts` and must never be imported from `src/` — anything in src/ ships to the browser, which would expose dealer cost and margin. ATD's `BuyPrice` stops at the serverless boundary.
+## Current Phase
+
+- Scheduling is the primary conversion path; tire e-commerce is gated behind `FEATURES.ecommerce` in src/config/site.ts until live inventory/pricing APIs exist. Shop pages stay browsable but show a preview banner and disabled Add to Cart.
+- Booking runs on Housecall Pro's widget script (sr
 - Money is handled in integer cents on the server; the UI formats dollars.
 - `Tire.rating`/`reviewCount`/`category` are optional: ATD supplies none of them, so UI must render without them.
 

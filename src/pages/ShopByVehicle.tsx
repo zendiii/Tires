@@ -46,9 +46,9 @@ function ResultsSection({ title, size, isOemSize }: {
     <section className="mt-14">
       <SectionHeading>{title}</SectionHeading>
       {tires === null ? (
-        <p className="animate-pulse text-neutral-500">Finding tires…</p>
+        <p className="animate-pulse text-ink-subtle">Finding tires…</p>
       ) : tires.length === 0 ? (
-        <p className="text-neutral-400">No tires in stock for {size} yet.</p>
+        <p className="text-ink-muted">No tires in stock for {size} yet.</p>
       ) : (
         <div className="grid gap-6 pt-3 sm:grid-cols-2 lg:grid-cols-3">
           {tires.map((tire, i) => (
@@ -91,7 +91,7 @@ export default function ShopByVehicle() {
         <PreviewBanner />
         <div className="flex flex-col items-center">
           <h1 className="font-display text-4xl">Shop by Vehicle</h1>
-          <p className="mt-3 mb-12 max-w-md text-center text-neutral-400">
+          <p className="mt-3 mb-12 max-w-md text-center text-ink-muted">
             Four quick steps and we'll show you exactly what fits.
           </p>
           <VehicleSelector onComplete={setVehicle} />
@@ -113,7 +113,7 @@ export default function ShopByVehicle() {
         className={`skew-brand border px-6 py-2.5 transition-colors ${
           active
             ? 'border-brand bg-brand'
-            : 'border-edge text-neutral-300 hover:border-brand hover:text-brand'
+            : 'border-edge text-ink-soft hover:border-brand hover:text-brand-ink'
         }`}
       >
         <span className={`skew-fix block font-display text-sm ${active ? 'text-white' : ''}`}>
@@ -128,10 +128,10 @@ export default function ShopByVehicle() {
       <PreviewBanner />
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="font-display text-xs tracking-widest text-brand">Your Vehicle</p>
+          <p className="font-display text-xs tracking-widest text-brand-ink">Your Vehicle</p>
           <h1 className="mt-1 font-display text-4xl">
             {vehicle.year} {vehicle.make} {vehicle.model}{' '}
-            <span className="text-neutral-500">{vehicle.trim}</span>
+            <span className="text-ink-subtle">{vehicle.trim}</span>
           </h1>
         </div>
         <button
@@ -147,8 +147,8 @@ export default function ShopByVehicle() {
         <WheelVisualizer fitment={fitment} selectedSize={selectedSize} />
 
         {fitment.staggered ? (
-          <p className="mt-8 text-center text-sm text-neutral-400">
-            This vehicle has a <span className="font-display text-brand">staggered setup</span> —
+          <p className="mt-8 text-center text-sm text-ink-muted">
+            This vehicle has a <span className="font-display text-brand-ink">staggered setup</span> —
             the rear tires are wider than the fronts, so you'll need both sizes.
           </p>
         ) : (

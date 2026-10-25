@@ -15,7 +15,7 @@ export default function PreviewBanner() {
       <span className="skew-brand bg-brand px-3 py-1">
         <span className="skew-fix block font-display text-xs text-white">Preview</span>
       </span>
-      <p className="min-w-0 flex-1 text-sm text-neutral-300">
+      <p className="min-w-0 flex-1 text-sm text-ink-soft">
         Online ordering isn't live yet — pricing and availability shown here are
         placeholders while we connect our inventory feed. Book an install and
         we'll source your set and confirm real pricing.
