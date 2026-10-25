@@ -10,6 +10,10 @@
     "moduleResolution": "bundler",
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
+    /* Checkout imports the sample tire catalog (src/data/tires.json) so the
+       payment flow is testable before ATD credentials exist. Data only —
+       no logic crosses from src/ into api/. */
+    "resolveJsonModule": true,
     "noEmit": true,
     "strict": true,
     "skipLibCheck": true,

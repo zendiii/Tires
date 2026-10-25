@@ -10,6 +10,7 @@ import ShopByVehicle from './pages/ShopByVehicle'
 import ShopBySize from './pages/ShopBySize'
 import TireDetail from './pages/TireDetail'
 import CartPage from './pages/CartPage'
+import OrderSuccess from './pages/OrderSuccess'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/shop/size" element={<ShopBySize />} />
         <Route path="/tire/:id" element={<TireDetail />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/order/success" element={<OrderSuccess />} />
         <Route path="*" element={<Home />} />
       </Route>
     </Routes>

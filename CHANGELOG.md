@@ -7,12 +7,79 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **Stripe Checkout.** `POST /api/checkout/session` opens a hosted Stripe
+  Checkout Session and the browser is redirected to it; `GET` on the same route
+  reads a finished session back for the confirmation page at `/order/success`.
+  Hosted Checkout means no Stripe.js, no publishable key in the bundle, and no
+  card data touching our code
+- `api/_lib/quote.ts` — the checkout trust boundary. The browser sends only
+  `{ tireId, size, quantity }` and every price is recomputed server-side from
+  the supplier feed, so an edited localStorage cart cannot change what is
+  charged. Also enforces per-line and per-order quantity caps
+- `api/stripe/webhook.ts` — signature-verified fulfilment hook for
+  `checkout.session.completed` (plus the delayed-settlement variants). This,
+  not the success page, is the trustworthy record that money moved; it carries
+  the seam where the ATD order and Housecall Pro job will be created
+- `api/_lib/stripe.ts` — server-only client with a pinned API version, plus
+  `SITE_URL`-based redirect targets, deliberately not derived from
+  request headers
+- Stripe env vars documented in `.env.example`. The dashboard-side runbook
+  (keys, webhooks, test cards, sales tax, go-live) is kept locally in the
+  gitignored `notes/` folder
+
+### Changed
+
+- E-commerce stays switched off (`FEATURES.ecommerce = false`) until ATD
+  inventory and pricing are live. Checkout is built and verified against the
+  Stripe sandbox, but every Add to Cart and checkout button stays disabled in
+  the meantime
+
+### Security
+
+- Checkout may price from the bundled sample catalog **only under a Stripe test
+  key**; a live key refuses and returns 503. A production deploy therefore
+  cannot sell sample inventory before ATD is connected, with no flag to forget
+- Verified against the built bundle that no Stripe secret, markup logic, or
+  supplier identifier reaches the browser
+
 ### Fixed
+
+- **Serverless functions hung forever under `vercel dev`.** They were written
+  as `export default async function handler(request: Request)`, but
+  `@vercel/node` only treats a function as a Web handler when the module
+  exports named methods (`GET`/`POST`) or a `fetch`. A default export is
+  invoked as a legacy Node `(req, res)` handler instead: the returned
+  `Response` is discarded, `res.end()` is never called, and the request hangs
+  with no error. Now exported as `GET`/`POST`, which also keeps
+  `request.text()` available — required for Stripe signature verification
+- `new URL(request.url)` threw `Invalid URL` under `vercel dev`, where
+  `request.url` is a relative path rather than the absolute URL production
+  supplies. The throw escaped the handler and killed the dev function runner,
+  so every subsequent request to any endpoint hung. Both call sites now use
+  `requestUrl()` in `api/_lib/http.ts`, which supplies a base
+- The SPA rewrite in `vercel.json` matched everything except `/api/`, which
+  under `vercel dev` swallowed Vite's own module requests (`/src/main.tsx`,
+  `/@vite/client`) and handed them `index.html` — Vite then failed to parse
+  HTML as JavaScript. The source pattern now also excludes `src/`, `@`, and
+  `node_modules/`. Production was never affected, because rewrites run after
+  the filesystem check and the built assets exist on disk
+- Stripe env values pasted with surrounding quotes made every prefix check
+  fail, so checkout answered a flat 503. `api/_lib/stripe.ts` now strips
+  matched surrounding quotes and whitespace when reading them
 
 - Vercel deploys failed schema validation: the rewrite rule in `vercel.json`
   carried a `comment` key, and Vercel rejects unknown properties. JSON has no
   comment syntax, so the explanation of the `/((?!api/).*)` lookahead moved to
   ARCHITECTURE.md
+
+### Added (tooling)
+
+- `npm run dev:api` — runs `vercel dev` with `.env.local` exported into its
+  environment. `vercel dev` does not load that file on its own here, so
+  functions saw no Stripe key and returned 503
+- `vercel` pinned as a devDependency so `vercel dev` is reproducible
 
 ## [0.7.0] - 2026-08-07
 

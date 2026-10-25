@@ -5,14 +5,23 @@
  * credentials; returns marked-up retail prices and nothing about cost.
  */
 import { ATD_CONFIGURED, searchBySize } from '../_lib/atd'
+import { json, requestUrl } from '../_lib/http'
 
-/** Vercel passes the standard Web Request/Response. */
+/*
+ * Exported as a named method, not `export default`.
+ *
+ * @vercel/node only treats a function as a Web handler (Request in, Response
+ * out) when the module exports GET/POST/etc. or a `fetch`. A default export is
+ * called as a legacy Node (req, res) handler instead — it receives an
+ * IncomingMessage, the returned Response is discarded, res.end() is never
+ * called, and the request hangs forever with no error.
+ */
 export const config = { runtime: 'nodejs' }
 
 const TIRE_SIZE = /^\d{3}\/\d{2}R\d{2}$/i
 
-export default async function handler(request: Request): Promise<Response> {
-  const size = new URL(request.url).searchParams.get('size') ?? ''
+export async function GET(request: Request): Promise<Response> {
+  const size = requestUrl(request).searchParams.get('size') ?? ''
 
   // Validate before spending an upstream call, and so nothing unchecked
   // reaches the SOAP envelope.
@@ -40,9 +49,3 @@ export default async function handler(request: Request): Promise<Response> {
   }
 }
 
-function json(body: unknown, status: number, headers: Record<string, string> = {}): Response {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: { 'Content-Type': 'application/json', ...headers },
-  })
-}

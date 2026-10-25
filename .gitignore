@@ -39,3 +39,9 @@ src/assets/Cameo/
 
 # Local scratch notes — not part of the shipped project
 notes/
+.vercel
+
+# Env files hold real secrets. .env.example is the tracked template (names
+# only, no values), so it is the one exception.
+.env*
+!.env.example

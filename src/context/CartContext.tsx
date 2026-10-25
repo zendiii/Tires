@@ -7,7 +7,7 @@
  * When Supabase arrives (later phase), this same interface can sync to a
  * server-side cart for logged-in users.
  */
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import type { CartItem } from '../types'
 
@@ -63,7 +63,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const removeItem = (tireId: string, size: string) => updateQuantity(tireId, size, 0)
 
-  const clear = () => setItems([])
+  /*
+   * useCallback with no deps, so `clear` is the same function every render.
+   * `setItems` is guaranteed stable by React, so this is genuinely constant —
+   * which lets effects depend on it honestly. Without it, any effect listing
+   * `clear` re-runs on every render, and the fix is usually to suppress the
+   * lint rule rather than the actual problem. (OrderSuccess needs this.)
+   */
+  const clear = useCallback(() => setItems([]), [])
 
   const count = items.reduce((sum, i) => sum + i.quantity, 0)
 

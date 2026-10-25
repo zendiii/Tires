@@ -3,14 +3,16 @@
  * the customer picks HOW they get their tires (ship / mobile / in-shop),
  * with per-tire installation fees rolled into the total.
  *
- * Checkout itself is a placeholder — payments (Stripe) arrive with the
- * serverless backend in a later phase.
+ * The totals below are an ESTIMATE for the customer's benefit. The amount
+ * actually charged is recomputed server-side in api/_lib/quote.ts from the
+ * supplier feed — nothing this page calculates is sent to Stripe.
  */
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import type { FulfillmentMethod, Tire } from '../types'
 import { FULFILLMENT_OPTIONS, formatPrice } from '../types'
 import { getTireById } from '../services/catalog'
+import { startCheckout } from '../services/checkout'
 import { useCart } from '../context/CartContext'
 import { FEATURES } from '../config/site'
 import TireGraphic from '../components/TireGraphic'
@@ -19,6 +21,8 @@ import BookButton from '../components/BookButton'
 export default function CartPage() {
   const { items, count, updateQuantity, removeItem } = useCart()
   const [fulfillment, setFulfillment] = useState<FulfillmentMethod>('ship')
+  const [checkingOut, setCheckingOut] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
   // Tire details are fetched per cart item (cart stores only ids — the
   // catalog stays the single source of truth for names and prices).
   const [tires, setTires] = useState<Record<string, Tire>>({})
@@ -82,6 +86,25 @@ export default function CartPage() {
         </div>
       </div>
     )
+  }
+
+  /*
+   * Sends the cart to our serverless function and follows the Stripe URL it
+   * returns. We deliberately do NOT clear the cart here — the customer is only
+   * being redirected, and they may well come back without paying. It's emptied
+   * on the confirmation page, once payment is verified.
+   */
+  const handleCheckout = async () => {
+    setCheckingOut(true)
+    setCheckoutError(null)
+    try {
+      await startCheckout(items, fulfillment)
+    } catch (error) {
+      setCheckoutError(
+        error instanceof Error ? error.message : 'Checkout is unavailable right now.',
+      )
+      setCheckingOut(false)
+    }
   }
 
   const option = FULFILLMENT_OPTIONS.find((o) => o.id === fulfillment)!
@@ -194,14 +217,24 @@ export default function CartPage() {
           <div>
             <button
               type="button"
-              disabled
-              className="skew-brand w-full cursor-not-allowed bg-surface-raised py-3.5"
+              onClick={handleCheckout}
+              disabled={checkingOut}
+              className="skew-brand w-full bg-brand py-3.5 transition-colors hover:bg-brand-hover disabled:cursor-wait disabled:bg-surface-raised"
             >
-              <span className="skew-fix block font-display text-neutral-500">Checkout</span>
+              <span className="skew-fix block font-display text-white">
+                {checkingOut ? 'Redirecting…' : 'Checkout'}
+              </span>
             </button>
+
+            {checkoutError && (
+              <p role="alert" className="mt-3 border-l-2 border-brand pl-3 text-sm text-neutral-300">
+                {checkoutError}
+              </p>
+            )}
+
             <p className="mt-3 text-center text-xs text-neutral-600">
-              Secure checkout with payment and appointment scheduling is coming
-              in the next phase.
+              Secure payment handled by Stripe. Sales tax and any federal excise
+              tax are calculated at checkout.
             </p>
           </div>
         </aside>

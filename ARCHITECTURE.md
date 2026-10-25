@@ -99,6 +99,86 @@ markup and never multiplied — it's a tax, not merchandise. There's an optional
 | `api/_lib/atd.ts` | SOAP client; maps ATD's response to a public shape with cost removed |
 | `api/tires/search.ts` | `GET /api/tires/search?size=275/55R20` |
 
+## Payments (Stripe)
+
+Setup is a dashboard exercise, written up in `notes/stripe-setup.md`. What
+follows is why the code looks the way it does.
+
+### Hosted Checkout, not embedded Elements
+
+The server creates a Checkout Session and the browser is redirected to
+stripe.com. The payoff is what we *don't* have: no Stripe.js in the bundle, no
+publishable key, and no card number ever entering our code, our network, or our
+logs. It also gets Apple Pay, Google Pay, 3D Secure, and address collection for
+free. The cost is a redirect away from our own styling, which for a handful of
+transactions a day is a trade worth making.
+
+### The trust boundary
+
+```
+browser ──▶ POST /api/checkout/session   { tireId, size, quantity, fulfillment }
+                   │                       ^^^^^^ no prices. ever.
+                   ├─ quoteCart() re-prices from ATD      api/_lib/quote.ts
+                   ├─ applyMarkup(cost) → retail          api/_lib/pricing.ts
+                   └─ stripe.checkout.sessions.create()
+browser ◀── { url } ──▶ stripe.com ──▶ /order/success?session_id=…
+
+stripe.com ──▶ POST /api/stripe/webhook  (signed, out of band)
+                   └─ the only trustworthy "this was paid"
+```
+
+The cart in localStorage holds no money — only `{ tireId, size, quantity }` —
+and that is load-bearing, not incidental. If the client sent prices, anyone
+could edit localStorage and buy a $400 tire for $1; we'd ship it and Stripe
+would capture the dollar. Every amount in a session is recomputed server-side.
+
+### Why the webhook exists when there's already a success page
+
+The success page proves only that a browser loaded a URL. The customer can
+close the tab before redirecting, pay by a method that settles hours later, or
+type the path in by hand. `api/stripe/webhook.ts` is Stripe telling our server
+directly, with an HMAC signature we verify against the raw request bytes —
+which is why it reads `request.text()` and must never be switched to `.json()`.
+
+Stripe guarantees *at-least-once* delivery. Anything added to that handler has
+to be keyed on `session.id` and skip work already done, or a retry turns into a
+second set of tires in the same driveway.
+
+### The sample-catalog rail
+
+Checkout will price from the bundled sample JSON under a Stripe **test** key,
+and refuses under a **live** key. That makes the full payment flow buildable
+before ATD credentials exist, while making it structurally impossible for the
+live site to sell inventory we can't source. It keys off the `sk_test_` prefix
+rather than a flag, so there is nothing to forget to turn off.
+
+| Files | Role |
+|---|---|
+| `api/_lib/stripe.ts` | Server-only client, pinned API version, `SITE_URL` redirect base. **Holds the secret key** |
+| `api/_lib/quote.ts` | Validates the cart and re-prices it from the supplier. The trust boundary |
+| `api/checkout/session.ts` | `POST` opens a session; `GET ?id=cs_…` reads one back for the confirmation page |
+| `api/stripe/webhook.ts` | Signature-verified fulfilment hook. Carries the seam for the ATD order + Housecall Pro job |
+| `api/_lib/http.ts` | `requestUrl()` (relative-URL safe) and the shared `json()` responder |
+| `src/services/checkout.ts` | Client half: posts the cart, follows the returned URL |
+
+### Serverless function conventions (learned the hard way)
+
+**Export named methods, never `export default`.** `@vercel/node` decides
+between the modern Web signature (`Request` in, `Response` out) and the legacy
+Node `(req, res)` signature by looking for exported `GET`/`POST`/etc. or a
+`fetch`. A default export silently takes the legacy path: your returned
+`Response` is thrown away, `res.end()` is never called, and the request hangs
+with no error anywhere. It only shows up as "the function is still running
+after 30s".
+
+**Never call `new URL(request.url)` bare.** Deployed, `request.url` is
+absolute; under `vercel dev` it is a relative path and `new URL` throws. Use
+`requestUrl()` from `api/_lib/http.ts`.
+
+**Run the functions with `npm run dev:api`, not `npm run dev`.** Plain Vite
+serves the React app and 404s every `/api/*` route. `vercel dev` runs both —
+and it does not pick up `.env.local` by itself, which the script handles.
+
 ## File tour
 
 ### Root
@@ -164,6 +244,7 @@ markup and never multiplied — it's a tax, not merchandise. There's an optional
 | `booking.ts` | **Real** integration (not a placeholder): loads the Housecall Pro widget script once and opens its booking modal. Explains why a plain iframe of the booking URL renders blank |
 | `catalog.ts` | Tire queries: search by size with filters, get by id, filter options, available sizes. Future: `GET /api/tires...` |
 | `fitment.ts` | Vehicle flow queries: years → makes → models → trims → fitment. Future: serverless proxy to a fitment API (keeps the API key secret) |
+| `checkout.ts` | **Real** integration: posts the cart to `/api/checkout/session` and follows Stripe's URL. Sends no prices — see the Payments section |
 
 ### `src/context/` — shared state
 
@@ -196,7 +277,8 @@ markup and never multiplied — it's a tax, not merchandise. There's an optional
 | `ShopByVehicle.tsx` | `/shop/vehicle` | Vehicle selector → wheel visualizer → OEM-first results (staggered-aware) |
 | `ShopBySize.tsx` | `/shop/size` | Fast size search with brand/type/load-range filters and sorting; size lives in the URL |
 | `TireDetail.tsx` | `/tire/:id` | Spec table, quantity picker (defaults to a set of 4), add to cart |
-| `CartPage.tsx` | `/cart` | Line items, fulfillment choice with fees, totals; checkout is disabled until the payments phase |
+| `CartPage.tsx` | `/cart` | Line items, fulfillment choice with fees, estimated totals, and the Stripe checkout button |
+| `OrderSuccess.tsx` | `/order/success` | Confirms a finished Checkout Session and clears the cart. Confirms only — fulfilment happens in the webhook |
 
 ### `public/`
 

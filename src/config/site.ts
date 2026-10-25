@@ -8,11 +8,15 @@
 /**
  * Feature gates.
  *
- * Tire e-commerce is built and browsable but not transactable: we don't have
- * live inventory/pricing API access yet, so prices and stock in the catalog
- * are sample data. Flip `ecommerce` to true once those APIs are wired into
- * src/services/ — that single change re-enables Add to Cart, the cart, and
- * checkout across the whole site.
+ * Tire e-commerce is built and browsable but not transactable. Stripe checkout
+ * is wired up and verified against the Stripe sandbox, but we're waiting on
+ * ATD API access, so prices and stock in the catalog are sample data. Flip
+ * `ecommerce` to true once `liveCatalog` is on and the prices check out — that
+ * single change re-enables Add to Cart, the cart, and checkout site-wide.
+ *
+ * Set it to true locally (don't commit it) to test checkout against a Stripe
+ * TEST key. The server refuses to sell sample inventory under a live key, so
+ * that rail holds even if this flag is flipped by mistake.
  */
 export const FEATURES: { ecommerce: boolean; liveCatalog: boolean } = {
   ecommerce: false,
