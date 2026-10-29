@@ -127,7 +127,6 @@ export default function Layout() {
             >
               {SITE.builderName}
             </a>{' '}
-            — v{__APP_VERSION__}
           </p>
         </div>
       </footer>

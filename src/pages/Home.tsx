@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom'
 import Logo from '../components/Logo'
 import BookButton from '../components/BookButton'
 import HeroPhotos from '../components/HeroPhotos'
+import ServiceArea from '../components/ServiceArea'
 import { FEATURES } from '../config/site'
 
 const PROMISES = [
@@ -78,6 +79,8 @@ export default function Home() {
           </div>
         ))}
       </div>
+
+      <ServiceArea />
 
       {/* Secondary: tire shopping, gated until pricing/inventory APIs land */}
       <section className="mt-24 w-full max-w-3xl border-t border-edge pt-14">

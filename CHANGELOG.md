@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Service area map** on the landing page: a Google Maps embed of the
+  business listing, which shows the service boundary (Delray Beach to Miami)
+  as Google draws it from the Google Business Profile. No API key — it's the
+  same embed Google Maps' Share dialog produces — and editing the service area
+  on the profile updates the site's map with no code change. A text list of
+  the cities sits beside it for screen readers and search engines, which
+  can't read a map. Phones get zoom 9 and desktop zoom 10 so the whole area
+  fits each frame; only the visible one is downloaded
+
 - **Light theme.** A sun/moon toggle in the header switches the whole site
   between dark (the original look) and a new light theme — a soft warm gray
   rather than pure white, so the always-dark hero photography doesn't look

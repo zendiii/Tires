@@ -65,6 +65,38 @@ export const BOOKING_DIRECT_URL: string = BOOKING_CONFIGURED
   ? `https://book.housecallpro.com/book/${BOOKING.orgName}/${BOOKING.token}?v2=true`
   : ''
 
+/**
+ * Mobile service area, shown on the landing page map.
+ *
+ * The boundary itself is NOT defined here: Google draws it from the service
+ * area on the Google Business Profile, both on the listing and in our embed.
+ * Change it there and the site's map follows — no code change.
+ *
+ * `cities` is the text version beside the map, north to south. A map is
+ * invisible to screen readers and search engines, so this list is how they
+ * learn where we go. Keep it in step with the Business Profile.
+ */
+export const SERVICE_AREA: { placeCid: string; cities: string[] } = {
+  /** Google's ID for the listing (the `0x…:0x99f4a8654b5bc390` part of a Maps URL, in decimal). */
+  placeCid: '11093676935129842576',
+  cities: [
+    'Delray Beach',
+    'Boca Raton',
+    'Coral Springs',
+    'Pompano Beach',
+    'Sunrise',
+    'Plantation',
+    'Fort Lauderdale',
+    'Davie',
+    'Pembroke Pines',
+    'Hollywood',
+    'Miami Gardens',
+    'Hialeah',
+    'Miami Beach',
+    'Miami',
+  ],
+}
+
 /** Public contact + social. Leave a field empty to hide it from the UI. */
 export const SITE: {
   instagramUrl: string
